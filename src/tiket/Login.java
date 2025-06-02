@@ -133,17 +133,21 @@ public class Login extends javax.swing.JFrame {
         try{
             String pass = new String(password.getPassword());
             con = Koneksi.getKoneksi();
-            String sql = "SELECT * FROM admin WHERE username='"+username.getText()+"' And password='"+pass+"'";
-            st = con.createStatement();
-            ResultSet rs = st.executeQuery(sql);
-            if(rs.next()){
-                if(username.getText().equals(rs.getString("username")) && pass.equals(rs.getString("password"))){
-                new Home().setVisible(true);
-                dispose();
-                }
-            }else{
-                    JOptionPane.showMessageDialog(null, "Gagal Login Oi");
-                }
+            if (con == null) {
+                JOptionPane.showMessageDialog(null, "Koneksi Database Gagal. Pastikan database server aktif dan konfigurasi sudah benar.", "Error Koneksi", JOptionPane.ERROR_MESSAGE);
+            } else {
+                String sql = "SELECT * FROM admin WHERE username='"+username.getText()+"' And password='"+pass+"'";
+                st = con.createStatement();
+                ResultSet rs = st.executeQuery(sql);
+                if(rs.next()){
+                    if(username.getText().equals(rs.getString("username")) && pass.equals(rs.getString("password"))){
+                    new Home().setVisible(true);
+                    dispose();
+                    }
+                }else{
+                        JOptionPane.showMessageDialog(null, "Gagal Login Oi");
+                    }
+            }
         }catch(SQLException ex){
             JOptionPane.showMessageDialog(this, ex.getMessage());
         }
