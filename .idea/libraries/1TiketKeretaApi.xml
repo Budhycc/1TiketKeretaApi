@@ -1,0 +1,9 @@
+<component name="libraryTable">
+  <library name="1TiketKeretaApi">
+    <CLASSES>
+      <root url="jar://$PROJECT_DIR$/dist/1TiketKeretaApi.jar!/" />
+    </CLASSES>
+    <JAVADOC />
+    <SOURCES />
+  </library>
+</component>
