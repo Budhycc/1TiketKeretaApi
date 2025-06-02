@@ -750,8 +750,6 @@ Sebanyak 26 skenario pengujian dianalisis.
 | TC_PASSENGER_004  | Uji fungsionalitas "Hapus Semua Data".                                     | Lulus  | `HapusActionPerformed` menghapus semua penumpang dengan benar setelah konfirmasi.                                                                      |
 | TC_PASSENGER_005  | Uji fungsionalitas "Hapus Semua Data" - Batal.                             | Lulus  | Pembatalan "Hapus Semua Data" berfungsi seperti yang diharapkan.                                                                                         |
 
-*(Catatan: Hasil aktual untuk TC_LOGIN_003 dan TC_LOGIN_005 telah dikoreksi pada tabel di atas karena terduplikasi dalam file .md sumber selama output alat pada langkah sebelumnya.)*
-
 ## 6. Temuan Utama dan Isu
 
 ### 6.1. Bug/Kasus Uji Gagal
