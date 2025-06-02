@@ -1,7 +1,3 @@
-Berikut adalah dokumentasi **1TiketKeretaApi** dalam format **Markdown** tanpa emoji:
-
----
-
 # 1TiketKeretaApi - Sistem Pemesanan Tiket Kereta Api
 
 ## JAR yang Dapat Dieksekusi
@@ -146,7 +142,3 @@ Akses melalui: Menu Data Penumpang
 | Admin Panel     | Kelola akun admin dan harga tiket.                        |
 | Data Penumpang  | Lihat, cetak laporan, dan hapus data pemesanan penumpang. |
 | Navigasi GUI    | Antar-frame: Home, Admin, dan Penumpang melalui menu.     |
-
----
-
-Jika diperlukan, saya juga dapat membantu menuliskan dokumentasi teknis tambahan seperti struktur database, diagram alur aplikasi, atau panduan instalasi.
