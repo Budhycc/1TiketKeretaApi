@@ -1,54 +1,54 @@
-Application: 1TiketKeretaApi (Train Ticket Booking System)
+Aplikasi: 1TiketKeretaApi (Sistem Pemesanan Tiket Kereta Api)
 
-Executable JAR: dist/1TiketKeretaApi.jar
+JAR yang Dapat Dieksekusi: dist/1TiketKeretaApi.jar
 
-Initial Screen:
-- Login screen with "Username" and "Password" fields.
-- Authentication is done against an `admin` table in the database.
+Layar Awal:
+- Layar login dengan kolom "Username" dan "Password".
+- Autentikasi dilakukan terhadap tabel `admin` di database.
 
-Main Navigation Elements (after login, in the `Home` window):
-- Ticket booking form with various input fields.
-- Menu bar:
-  - "File" menu:
-    - "Admin": Leads to an admin section.
-    - "Keluar": Exits the application.
-  - "Data Penumpang" menu: Leads to a passenger data viewing section.
+Elemen Navigasi Utama (setelah login, di jendela `Home`):
+- Formulir pemesanan tiket dengan berbagai kolom input.
+- Bilah menu:
+  - Menu "File":
+    - "Admin": Mengarah ke bagian admin.
+    - "Keluar": Keluar dari aplikasi.
+  - Menu "Data Penumpang": Mengarah ke bagian melihat data penumpang.
 
-Apparent Core Features:
-1.  Login: Authenticates users (presumably administrators).
-2.  Ticket Booking:
-    - Passenger details (ID, name, address).
-    - Station selection (start and destination).
-    - Train and carriage selection.
-    - Date selection.
-    - Number of adult/child passengers.
-3.  Price Calculation: Dynamically calculates ticket prices based on selected options (likely from a `harga` database table).
-4.  Ticket Generation: Saves booking to `penumpang` table and generates a ticket report (`Tiket.jasper`).
-5.  Admin Panel (`Admin.java`): Accessed via "File" -> "Admin" menu.
-    - Admin User Management:
-        - Add, view, edit, and delete admin users (data stored in `admin` table).
-        - UI: Input fields for name, username, password; JTable for display; Save, Edit, Delete buttons.
-    - Price Management:
-        - View and edit ticket prices (data stored in `harga` table).
-        - Prices are categorized by "Status" (e.g., adult/child) and "Kelas" (carriage class).
-        - UI: JTable for display; fields for status, class, price (price editable); Save button.
-6.  Passenger Data Viewing (`Penumpang.java`): Accessed via "Data Penumpang" menu.
-    - View all passenger booking records from the `penumpang` table in a JTable.
-    - Columns include ID, name, address, train, carriage, destination, departure/arrival times, date, adult/child counts, and total price.
-    - Print Passenger Report: Generates a JasperReport (`penumpang.jasper`) of all passenger data.
-    - Delete All Passenger Data: Clears the `penumpang` table after confirmation.
+Fitur Inti yang Tampak:
+1.  Login: Mengautentikasi pengguna (kemungkinan administrator).
+2.  Pemesanan Tiket:
+    - Detail penumpang (ID, nama, alamat).
+    - Pemilihan stasiun (awal dan tujuan).
+    - Pemilihan kereta dan gerbong.
+    - Pemilihan tanggal.
+    - Jumlah penumpang dewasa/anak-anak.
+3.  Perhitungan Harga: Secara dinamis menghitung harga tiket berdasarkan opsi yang dipilih (kemungkinan dari tabel `harga` di database).
+4.  Pembuatan Tiket: Menyimpan pemesanan ke tabel `penumpang` dan menghasilkan laporan tiket (`Tiket.jasper`).
+5.  Panel Admin (`Admin.java`): Diakses melalui menu "File" -> "Admin".
+    - Manajemen Pengguna Admin:
+        - Menambah, melihat, mengedit, dan menghapus pengguna admin (data disimpan di tabel `admin`).
+        - Antarmuka Pengguna (UI): Kolom input untuk nama, username, password; JTable untuk tampilan; Tombol Simpan, Edit, Hapus.
+    - Manajemen Harga:
+        - Melihat dan mengedit harga tiket (data disimpan di tabel `harga`).
+        - Harga dikategorikan berdasarkan "Status" (misalnya, dewasa/anak) dan "Kelas" (kelas gerbong).
+        - UI: JTable untuk tampilan; kolom untuk status, kelas, harga (harga dapat diedit); Tombol Simpan.
+6.  Melihat Data Penumpang (`Penumpang.java`): Diakses melalui menu "Data Penumpang".
+    - Melihat semua catatan pemesanan penumpang dari tabel `penumpang` di JTable.
+    - Kolom meliputi ID, nama, alamat, kereta, gerbong, tujuan, waktu berangkat/tiba, tanggal, jumlah dewasa/anak, dan total harga.
+    - Mencetak Laporan Penumpang: Menghasilkan laporan JasperReport (`penumpang.jasper`) dari semua data penumpang.
+    - Menghapus Semua Data Penumpang: Menghapus tabel `penumpang` setelah konfirmasi.
 
-Technical Notes:
-- The application is a Java Swing GUI application.
-- It uses a MySQL database (requires `mysql-connector-java` driver).
-- Database connection details are handled in `tiket.Koneksi`.
-- Main application logic after login is in `tiket.Home`.
-- It uses JasperReports for ticket and passenger list generation.
-- Running the JAR directly in a headless environment throws `java.awt.HeadlessException`. Exploration was done by analyzing the source code.
-- The application seems to have a fixed start station: "Bandung (BD)" in the booking form.
-- Default train options: "Argo Wilis", "Argo Parahyangan", "Lodaya".
-- Default carriage options: "Eksekutif 1/2", "Ekonomi 1/2/3".
-- Prices for adults and children are fetched based on carriage class from the `harga` table.
-- The `bayangan1` JTextField in `Admin.java` is used as a hidden field to store the ID of the currently selected item in tables for update/delete operations.
-- Navigation between main sections (Home, Admin, Penumpang) is done by creating new JFrame instances and disposing of the current one.
-- The `Admin` and `Penumpang` sections also have menu options to navigate to other sections or exit.
+Catatan Teknis:
+- Aplikasi ini adalah aplikasi GUI Java Swing.
+- Menggunakan database MySQL (membutuhkan driver `mysql-connector-java`).
+- Detail koneksi database ditangani di `tiket.Koneksi`.
+- Logika aplikasi utama setelah login ada di `tiket.Home`.
+- Menggunakan JasperReports untuk pembuatan tiket dan daftar penumpang.
+- Menjalankan JAR secara langsung di lingkungan headless (tanpa antarmuka grafis) menyebabkan `java.awt.HeadlessException`. Eksplorasi dilakukan dengan menganalisis kode sumber.
+- Aplikasi tampaknya memiliki stasiun awal tetap: "Bandung (BD)" dalam formulir pemesanan.
+- Opsi kereta default: "Argo Wilis", "Argo Parahyangan", "Lodaya".
+- Opsi gerbong default: "Eksekutif 1/2", "Ekonomi 1/2/3".
+- Harga untuk dewasa dan anak-anak diambil berdasarkan kelas gerbong dari tabel `harga`.
+- `JTextField bayangan1` di `Admin.java` digunakan sebagai kolom tersembunyi untuk menyimpan ID item yang saat ini dipilih di tabel untuk operasi pembaruan/penghapusan.
+- Navigasi antar bagian utama (Home, Admin, Penumpang) dilakukan dengan membuat instance JFrame baru dan membuang yang sekarang.
+- Bagian `Admin` dan `Penumpang` juga memiliki opsi menu untuk menavigasi ke bagian lain atau keluar.
