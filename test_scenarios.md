@@ -1,515 +1,511 @@
-# Test Scenarios for 1TiketKeretaApi Application
+# Skenario Pengujian untuk Aplikasi 1TiketKeretaApi
 
-## Login Scenarios
+## Skenario Login
 
 ---
 **ID:** TC_LOGIN_001
-**Title:** Successful login with valid admin credentials.
-**Preconditions:**
-    - Valid admin username and password exist in the `admin` table.
-    - Application is at the Login screen.
-**Steps:**
-    1. Enter valid admin username in the "Username" field.
-    2. Enter corresponding valid password in the "Password" field.
-    3. Click the "LOGIN" button.
-**Expected Result:**
-    - The Login window closes.
-    - The Home (ticket booking) window opens.
-**Actual Result:** Code in `Login.java` (`btnloginActionPerformed`) executes a SQL query. If a match is found, it calls `new Home().setVisible(true);` and `dispose();`.
-**Status:** Pass
+**Judul:** Login berhasil dengan kredensial admin yang valid.
+**Prakondisi:**
+    - Username dan password admin yang valid ada di tabel `admin`.
+    - Aplikasi berada di layar Login.
+**Langkah-langkah:**
+    1. Masukkan username admin yang valid di kolom "Username".
+    2. Masukkan password valid yang sesuai di kolom "Password".
+    3. Klik tombol "LOGIN".
+**Hasil yang Diharapkan:**
+    - Jendela Login tertutup.
+    - Jendela Beranda (pemesanan tiket) terbuka.
+**Hasil Aktual:** Kode di `Login.java` (`btnloginActionPerformed`) menjalankan kueri SQL. Jika kecocokan ditemukan, ia memanggil `new Home().setVisible(true);` dan `dispose();`.
+**Status:** Lulus
 
 ---
 **ID:** TC_LOGIN_002
-**Title:** Failed login with invalid username.
-**Preconditions:**
-    - Application is at the Login screen.
-**Steps:**
-    1. Enter an invalid username in the "Username" field.
-    2. Enter any password in the "Password" field.
-    3. Click the "LOGIN" button.
-**Expected Result:**
-    - An error message "Gagal Login Oi" (or similar) is displayed.
-    - The user remains on the Login screen.
-**Actual Result:** SQL query `SELECT * FROM admin WHERE username='<invalid_username>' And password='<password>'` is executed. `rs.next()` is false. `JOptionPane.showMessageDialog(null, "Gagal Login Oi");` is shown. Login screen remains.
-**Status:** Pass
-**Actual Result:** SQL query `SELECT * FROM admin WHERE username='<valid_username>' And password='<invalid_password>'` is executed. `rs.next()` is false. `JOptionPane.showMessageDialog(null, "Gagal Login Oi");` is shown. Login screen remains.
-**Status:** Pass
+**Judul:** Login gagal dengan username tidak valid.
+**Prakondisi:**
+    - Aplikasi berada di layar Login.
+**Langkah-langkah:**
+    1. Masukkan username yang tidak valid di kolom "Username".
+    2. Masukkan password apa pun di kolom "Password".
+    3. Klik tombol "LOGIN".
+**Hasil yang Diharapkan:**
+    - Pesan kesalahan "Gagal Login Oi" (atau serupa) ditampilkan.
+    - Pengguna tetap berada di layar Login.
+**Hasil Aktual:** Kueri SQL `SELECT * FROM admin WHERE username='<username_tidak_valid>' And password='<password>'` dijalankan. `rs.next()` bernilai false. `JOptionPane.showMessageDialog(null, "Gagal Login Oi");` ditampilkan. Layar Login tetap ada.
+**Status:** Lulus
 
 ---
 **ID:** TC_LOGIN_003
-**Title:** Failed login with invalid password.
-**Preconditions:**
-    - Valid admin username exists in the `admin` table.
-    - Application is at the Login screen.
-**Steps:**
-    1. Enter a valid admin username in the "Username" field.
-    2. Enter an invalid password in the "Password" field.
-    3. Click the "LOGIN" button.
-**Expected Result:**
-    - An error message "Gagal Login Oi" (or similar) is displayed.
-    - The user remains on the Login screen.
-**Actual Result:**
-**Status:**
+**Judul:** Login gagal dengan password tidak valid.
+**Prakondisi:**
+    - Username admin yang valid ada di tabel `admin`.
+    - Aplikasi berada di layar Login.
+**Langkah-langkah:**
+    1. Masukkan username admin yang valid di kolom "Username".
+    2. Masukkan password yang tidak valid di kolom "Password".
+    3. Klik tombol "LOGIN".
+**Hasil yang Diharapkan:**
+    - Pesan kesalahan "Gagal Login Oi" (atau serupa) ditampilkan.
+    - Pengguna tetap berada di layar Login.
+**Hasil Aktual:** Kueri SQL `SELECT * FROM admin WHERE username='<username_valid>' And password='<password_tidak_valid>'` dijalankan. `rs.next()` bernilai false. `JOptionPane.showMessageDialog(null, "Gagal Login Oi");` ditampilkan. Layar Login tetap ada.
+**Status:** Lulus
 
 ---
 **ID:** TC_LOGIN_004
-**Title:** Failed login with empty username.
-**Preconditions:**
-    - Application is at the Login screen.
-**Steps:**
-    1. Leave the "Username" field empty.
-    2. Enter any password in the "Password" field.
-    3. Click the "LOGIN" button.
-**Expected Result:**
-    - An error message indicating failure (e.g., "Gagal Login Oi" or a specific database error if the query fails) is displayed.
-    - The user remains on the Login screen.
-**Actual Result:** SQL query `SELECT * FROM admin WHERE username='' And password='<password>'` is executed. Assuming no admin user has an empty username, `rs.next()` is false. `JOptionPane.showMessageDialog(null, "Gagal Login Oi");` is shown. Login screen remains.
-**Status:** Pass
-**Actual Result:** SQL query `SELECT * FROM admin WHERE username='<username>' And password=''` is executed. Assuming the specified user does not have an empty password, `rs.next()` is false. `JOptionPane.showMessageDialog(null, "Gagal Login Oi");` is shown. Login screen remains.
-**Status:** Pass
+**Judul:** Login gagal dengan username kosong.
+**Prakondisi:**
+    - Aplikasi berada di layar Login.
+**Langkah-langkah:**
+    1. Biarkan kolom "Username" kosong.
+    2. Masukkan password apa pun di kolom "Password".
+    3. Klik tombol "LOGIN".
+**Hasil yang Diharapkan:**
+    - Pesan kesalahan yang menunjukkan kegagalan (misalnya, "Gagal Login Oi" atau kesalahan database spesifik jika kueri gagal) ditampilkan.
+    - Pengguna tetap berada di layar Login.
+**Hasil Aktual:** Kueri SQL `SELECT * FROM admin WHERE username='' And password='<password>'` dijalankan. Dengan asumsi tidak ada pengguna admin dengan username kosong, `rs.next()` bernilai false. `JOptionPane.showMessageDialog(null, "Gagal Login Oi");` ditampilkan. Layar Login tetap ada.
+**Status:** Lulus
 
 ---
 **ID:** TC_LOGIN_005
-**Title:** Failed login with empty password.
-**Preconditions:**
-    - Application is at the Login screen.
-**Steps:**
-    1. Enter any username in the "Username" field.
-    2. Leave the "Password" field empty.
-    3. Click the "LOGIN" button.
-**Expected Result:**
-    - An error message indicating failure (e.g., "Gagal Login Oi" or a specific database error if the query fails) is displayed.
-    - The user remains on the Login screen.
-**Actual Result:**
-**Status:**
+**Judul:** Login gagal dengan password kosong.
+**Prakondisi:**
+    - Aplikasi berada di layar Login.
+**Langkah-langkah:**
+    1. Masukkan username apa pun di kolom "Username".
+    2. Biarkan kolom "Password" kosong.
+    3. Klik tombol "LOGIN".
+**Hasil yang Diharapkan:**
+    - Pesan kesalahan yang menunjukkan kegagalan (misalnya, "Gagal Login Oi" atau kesalahan database spesifik jika kueri gagal) ditampilkan.
+    - Pengguna tetap berada di layar Login.
+**Hasil Aktual:** Kueri SQL `SELECT * FROM admin WHERE username='<username>' And password=''` dijalankan. Dengan asumsi pengguna yang ditentukan tidak memiliki password kosong, `rs.next()` bernilai false. `JOptionPane.showMessageDialog(null, "Gagal Login Oi");` ditampilkan. Layar Login tetap ada.
+**Status:** Lulus
 
 ---
 
-## Ticket Booking (Home Screen) Scenarios
+## Skenario Pemesanan Tiket (Layar Beranda)
 
 ---
 **ID:** TC_BOOK_001
-**Title:** Successful ticket booking with all valid inputs for one adult.
-**Preconditions:**
-    - User is logged in and on the Home screen.
-    - Price data for selected train/class exists in the `harga` table.
-**Steps:**
-    1. Passenger ID (`fid`) is auto-populated.
-    2. Enter passenger name in "Nama Penumpang".
-    3. Enter passenger address in "Alamat".
-    4. "Stasiun Awal" is "Bandung (BD)".
-    5. Select a "Stasiun Tujuan" from the dropdown.
-    6. Select a "Kereta Api" from the dropdown.
-    7. Select a "Gerbong" from the dropdown.
-    8. Select a date from "tanggal".
-    9. Set "Dewasa" spinner to 1.
-    10. Set "Anak-anak" spinner to 0.
-    11. Verify "Total" price is calculated and displayed.
-    12. Enter a valid amount in "Bayar" (greater than or equal to Total).
-    13. Press Enter in the "Bayar" field to calculate "Kembali".
-    14. Click the "Simpan" button.
-**Expected Result:**
-    - Booking is saved to the `penumpang` table.
-    - A success message (or ticket generation process) is initiated.
-    - The Home window closes and a new Home window (or the same one cleared) is displayed with a new auto-generated ID.
-    - JasperReports ticket generation process is invoked (e.g., `JasperViewer.viewReport` is called).
-**Actual Result:** Code in `Home.java` (`simpan` method) executes an INSERT SQL query. If successful, it disposes the current `Home` window, creates a new one (via `Index.oke()`), and then calls `JasperFillManager.fillReport` and `JasperViewer.viewReport` with "src/report/Tiket.jasper" and the passenger ID.
-**Status:** Pass
+**Judul:** Pemesanan tiket berhasil dengan semua input valid untuk satu orang dewasa.
+**Prakondisi:**
+    - Pengguna sudah login dan berada di layar Beranda.
+    - Data harga untuk kereta/kelas yang dipilih ada di tabel `harga`.
+**Langkah-langkah:**
+    1. ID Penumpang (`fid`) terisi otomatis.
+    2. Masukkan nama penumpang di "Nama Penumpang".
+    3. Masukkan alamat penumpang di "Alamat".
+    4. "Stasiun Awal" adalah "Bandung (BD)".
+    5. Pilih "Stasiun Tujuan" dari dropdown.
+    6. Pilih "Kereta Api" dari dropdown.
+    7. Pilih "Gerbong" dari dropdown.
+    8. Pilih tanggal dari "tanggal".
+    9. Atur spinner "Dewasa" ke 1.
+    10. Atur spinner "Anak-anak" ke 0.
+    11. Verifikasi harga "Total" dihitung dan ditampilkan.
+    12. Masukkan jumlah yang valid di "Bayar" (lebih besar atau sama dengan Total).
+    13. Tekan Enter di kolom "Bayar" untuk menghitung "Kembali".
+    14. Klik tombol "Simpan".
+**Hasil yang Diharapkan:**
+    - Pemesanan disimpan ke tabel `penumpang`.
+    - Pesan sukses (atau proses pembuatan tiket) dimulai.
+    - Jendela Beranda tertutup dan jendela Beranda baru (atau yang sama dikosongkan) ditampilkan dengan ID baru yang dibuat otomatis.
+    - Proses pembuatan tiket JasperReports dipanggil (misalnya, `JasperViewer.viewReport` dipanggil).
+**Hasil Aktual:** Kode di `Home.java` (metode `simpan`) menjalankan kueri SQL INSERT. Jika berhasil, ia menutup jendela `Home` saat ini, membuat yang baru (melalui `Index.oke()`), lalu memanggil `JasperFillManager.fillReport` dan `JasperViewer.viewReport` dengan "src/report/Tiket.jasper" dan ID penumpang.
+**Status:** Lulus
 
 ---
 **ID:** TC_BOOK_002
-**Title:** Successful ticket booking with all valid inputs for multiple adults and children.
-**Preconditions:**
-    - User is logged in and on the Home screen.
-    - Price data for selected train/class exists in the `harga` table for both adults and children.
-**Steps:**
-    1. Enter passenger name, address.
-    2. Select destination, train, carriage, and date.
-    3. Set "Dewasa" spinner to 2 (or any number > 0).
-    4. Set "Anak-anak" spinner to 1 (or any number > 0).
-    5. Verify "Total" price is calculated correctly based on adult and child prices.
-    6. Enter a valid amount in "Bayar".
-    7. Press Enter in "Bayar" field.
-    8. Click "Simpan".
-**Expected Result:**
-    - Booking is saved to the `penumpang` table.
-    - Ticket generation process is initiated.
-    - The Home window is refreshed/reopened.
-**Actual Result:** Similar to TC_BOOK_001. The `dewasa()` and `anak()` methods correctly use spinner values and prices from `hdewasa`/`hanak` labels. The `simpan()` method inserts these values. JasperReports is invoked.
-**Status:** Pass
+**Judul:** Pemesanan tiket berhasil dengan semua input valid untuk beberapa dewasa dan anak-anak.
+**Prakondisi:**
+    - Pengguna sudah login dan berada di layar Beranda.
+    - Data harga untuk kereta/kelas yang dipilih ada di tabel `harga` untuk dewasa dan anak-anak.
+**Langkah-langkah:**
+    1. Masukkan nama penumpang, alamat.
+    2. Pilih tujuan, kereta, gerbong, dan tanggal.
+    3. Atur spinner "Dewasa" ke 2 (atau angka > 0).
+    4. Atur spinner "Anak-anak" ke 1 (atau angka > 0).
+    5. Verifikasi harga "Total" dihitung dengan benar berdasarkan harga dewasa dan anak-anak.
+    6. Masukkan jumlah yang valid di "Bayar".
+    7. Tekan Enter di kolom "Bayar".
+    8. Klik "Simpan".
+**Hasil yang Diharapkan:**
+    - Pemesanan disimpan ke tabel `penumpang`.
+    - Proses pembuatan tiket dimulai.
+    - Jendela Beranda disegarkan/dibuka kembali.
+**Hasil Aktual:** Mirip dengan TC_BOOK_001. Metode `dewasa()` dan `anak()` dengan benar menggunakan nilai spinner dan harga dari label `hdewasa`/`hanak`. Metode `simpan()` menyisipkan nilai-nilai ini. JasperReports dipanggil.
+**Status:** Lulus
 
 ---
 **ID:** TC_BOOK_003
-**Title:** Attempt booking without selecting a destination.
-**Preconditions:**
-    - User is logged in and on the Home screen.
-**Steps:**
-    1. Fill in all other required fields (name, train, class, passengers).
-    2. Leave "Stasiun Tujuan" at its default/unselected state (if applicable, or try to proceed if it's a mandatory selection from a list).
-    3. Click "Simpan".
-**Expected Result:**
-    - An error message is displayed indicating that destination is required.
-    - Booking is not saved.
-**Actual Result:** No explicit validation in `simpan()`. `stasiun_tujuan.getSelectedItem()` likely returns the first item by default. The `INSERT` query proceeds. Departure/arrival times might be incorrect if they rely on a specific valid destination in `ckeretaActionPerformed`. Booking is saved with potentially default/undesired destination.
-**Status:** Fail
+**Judul:** Upaya pemesanan tanpa memilih tujuan.
+**Prakondisi:**
+    - Pengguna sudah login dan berada di layar Beranda.
+**Langkah-langkah:**
+    1. Isi semua kolom wajib lainnya (nama, kereta, kelas, penumpang).
+    2. Biarkan "Stasiun Tujuan" pada keadaan default/tidak dipilih (jika berlaku, atau coba lanjutkan jika itu adalah pilihan wajib dari daftar).
+    3. Klik "Simpan".
+**Hasil yang Diharapkan:**
+    - Pesan kesalahan ditampilkan yang menunjukkan bahwa tujuan wajib diisi.
+    - Pemesanan tidak disimpan.
+**Hasil Aktual:** Tidak ada validasi eksplisit di `simpan()`. `stasiun_tujuan.getSelectedItem()` kemungkinan mengembalikan item pertama secara default. Kueri `INSERT` dilanjutkan. Waktu berangkat/tiba mungkin salah jika bergantung pada tujuan yang valid tertentu di `ckeretaActionPerformed`. Pemesanan disimpan dengan tujuan yang mungkin default/tidak diinginkan.
+**Status:** Gagal
 
 ---
 **ID:** TC_BOOK_004
-**Title:** Attempt booking without selecting a train.
-**Preconditions:**
-    - User is logged in and on the Home screen.
-**Steps:**
-    1. Fill in all other required fields (name, destination, class, passengers).
-    2. Leave "Kereta Api" at its default/empty state (e.g., the first empty item).
-    3. Click "Simpan".
-**Expected Result:**
-    - An error message is displayed indicating that train selection is required, or the application handles it gracefully (e.g., no price calculation).
-    - Booking is not saved if selection is mandatory for pricing/saving.
-**Actual Result:** No explicit validation in `simpan()`. `ckereta.getSelectedItem()` returns `""` (the default empty item). `INSERT` query saves `""` for train name. `berangkat` and `tiba` labels remain "00.00 WIB". Price calculation might be based on stale `hdewasa`/`hanak` if no train implies no class prices are loaded.
-**Status:** Fail
+**Judul:** Upaya pemesanan tanpa memilih kereta.
+**Prakondisi:**
+    - Pengguna sudah login dan berada di layar Beranda.
+**Langkah-langkah:**
+    1. Isi semua kolom wajib lainnya (nama, tujuan, kelas, penumpang).
+    2. Biarkan "Kereta Api" pada keadaan default/kosong (misalnya, item kosong pertama).
+    3. Klik "Simpan".
+**Hasil yang Diharapkan:**
+    - Pesan kesalahan ditampilkan yang menunjukkan bahwa pemilihan kereta wajib diisi, atau aplikasi menanganinya dengan baik (misalnya, tidak ada perhitungan harga).
+    - Pemesanan tidak disimpan jika pemilihan wajib untuk penetapan harga/penyimpanan.
+**Hasil Aktual:** Tidak ada validasi eksplisit di `simpan()`. `ckereta.getSelectedItem()` mengembalikan `""` (item kosong default). Kueri `INSERT` menyimpan `""` untuk nama kereta. Label `berangkat` dan `tiba` tetap "00.00 WIB". Perhitungan harga mungkin didasarkan pada `hdewasa`/`hanak` yang basi jika tidak ada kereta berarti tidak ada harga kelas yang dimuat.
+**Status:** Gagal
 
 ---
 **ID:** TC_BOOK_005
-**Title:** Attempt booking without selecting a carriage class.
-**Preconditions:**
-    - User is logged in and on the Home screen.
-**Steps:**
-    1. Fill in all other required fields (name, destination, train, passengers).
-    2. Leave "Gerbong" at its default/empty state.
-    3. Click "Simpan".
-**Expected Result:**
-    - An error message is displayed indicating that carriage class is required for price calculation.
-    - Booking is not saved.
-**Actual Result:** No explicit validation in `simpan()`. `cgerbong.getSelectedItem()` returns `" "` (the default empty item). `kelasActionPerformed` is called, but no conditions match for `" "`, so `hdewasa` and `hanak` are not updated (or are "0"). `ltotal` calculation uses these incorrect/zero prices. `INSERT` query saves `" "` for gerbong and an incorrect total.
-**Status:** Fail
+**Judul:** Upaya pemesanan tanpa memilih kelas gerbong.
+**Prakondisi:**
+    - Pengguna sudah login dan berada di layar Beranda.
+**Langkah-langkah:**
+    1. Isi semua kolom wajib lainnya (nama, tujuan, kereta, penumpang).
+    2. Biarkan "Gerbong" pada keadaan default/kosong.
+    3. Klik "Simpan".
+**Hasil yang Diharapkan:**
+    - Pesan kesalahan ditampilkan yang menunjukkan bahwa kelas gerbong wajib diisi untuk perhitungan harga.
+    - Pemesanan tidak disimpan.
+**Hasil Aktual:** Tidak ada validasi eksplisit di `simpan()`. `cgerbong.getSelectedItem()` mengembalikan `" "` (item kosong default). `kelasActionPerformed` dipanggil, tetapi tidak ada kondisi yang cocok untuk `" "`, jadi `hdewasa` dan `hanak` tidak diperbarui (atau "0"). Perhitungan `ltotal` menggunakan harga yang salah/nol ini. Kueri `INSERT` menyimpan `" "` untuk gerbong dan total yang salah.
+**Status:** Gagal
 
 ---
 **ID:** TC_BOOK_006
-**Title:** Attempt booking without entering passenger name.
-**Preconditions:**
-    - User is logged in and on the Home screen.
-**Steps:**
-    1. Fill in all other required fields (destination, train, class, passengers).
-    2. Leave "Nama Penumpang" empty.
-    3. Click "Simpan".
-**Expected Result:**
-    - An error message is displayed (e.g., database error for non-nullable field, or specific validation message).
-    - Booking is not saved.
-**Actual Result:** No explicit validation in `simpan()`. `fnama.getText()` is empty. `INSERT` query attempts to save `""` for name. If DB column `nama` in `penumpang` is `NOT NULL` and disallows empty strings, SQL execution fails, and a generic `JOptionPane` shows the SQL error. Otherwise, empty name is saved.
-**Status:** Fail
+**Judul:** Upaya pemesanan tanpa memasukkan nama penumpang.
+**Prakondisi:**
+    - Pengguna sudah login dan berada di layar Beranda.
+**Langkah-langkah:**
+    1. Isi semua kolom wajib lainnya (tujuan, kereta, kelas, penumpang).
+    2. Biarkan "Nama Penumpang" kosong.
+    3. Klik "Simpan".
+**Hasil yang Diharapkan:**
+    - Pesan kesalahan ditampilkan (misalnya, kesalahan database untuk kolom non-nullable, atau pesan validasi spesifik).
+    - Pemesanan tidak disimpan.
+**Hasil Aktual:** Tidak ada validasi eksplisit di `simpan()`. `fnama.getText()` kosong. Kueri `INSERT` mencoba menyimpan `""` untuk nama. Jika kolom DB `nama` di `penumpang` adalah `NOT NULL` dan tidak mengizinkan string kosong, eksekusi SQL gagal, dan `JOptionPane` generik menampilkan kesalahan SQL. Jika tidak, nama kosong disimpan.
+**Status:** Gagal
 
 ---
 **ID:** TC_BOOK_007
-**Title:** Attempt booking with zero adults and zero children.
-**Preconditions:**
-    - User is logged in and on the Home screen.
-**Steps:**
-    1. Fill in all other required fields (name, destination, train, class).
-    2. Set "Dewasa" spinner to 0.
-    3. Set "Anak-anak" spinner to 0.
-    4. Click "Simpan".
-**Expected Result:**
-    - An error message is displayed indicating at least one passenger is required, or the total price is zero and saving is prevented.
-    - Booking is not saved.
-**Actual Result:** No explicit validation in `simpan()`. `sdewasa.getValue()` and `sanak.getValue()` are 0. `ltotal` becomes "Rp. 0". `INSERT` query saves booking with 0 adults, 0 children, and 0 total.
-**Status:** Fail
+**Judul:** Upaya pemesanan dengan nol dewasa dan nol anak-anak.
+**Prakondisi:**
+    - Pengguna sudah login dan berada di layar Beranda.
+**Langkah-langkah:**
+    1. Isi semua kolom wajib lainnya (nama, tujuan, kereta, kelas).
+    2. Atur spinner "Dewasa" ke 0.
+    3. Atur spinner "Anak-anak" ke 0.
+    4. Klik "Simpan".
+**Hasil yang Diharapkan:**
+    - Pesan kesalahan ditampilkan yang menunjukkan bahwa setidaknya satu penumpang diperlukan, atau total harga nol dan penyimpanan dicegah.
+    - Pemesanan tidak disimpan.
+**Hasil Aktual:** Tidak ada validasi eksplisit di `simpan()`. `sdewasa.getValue()` dan `sanak.getValue()` adalah 0. `ltotal` menjadi "Rp. 0". Kueri `INSERT` menyimpan pemesanan dengan 0 dewasa, 0 anak-anak, dan total 0.
+**Status:** Gagal
 
 ---
 **ID:** TC_BOOK_008
-**Title:** Verify dynamic price calculation based on train, class, and number of passengers.
-**Preconditions:**
-    - User is logged in and on the Home screen.
-    - Known prices exist in the `harga` table for different classes and adult/child status.
-**Steps:**
-    1. Select a "Kereta Api".
-    2. Select a "Gerbong" (e.g., "Eksekutif 1").
-    3. Set "Dewasa" spinner to 1, "Anak-anak" to 0. Note the "Total".
-    4. Change "Dewasa" spinner to 2. Verify "Total" doubles.
-    5. Set "Anak-anak" spinner to 1. Verify "Total" increases by the child price for that class.
-    6. Change "Gerbong" to another class (e.g., "Ekonomi 1").
-    7. Verify "Total" updates based on the new class prices for the current number of adults and children.
-**Expected Result:**
-    - The "Total" field updates correctly and dynamically as train, class, and number of passengers change, reflecting the prices from the `harga` table.
-    - `hdewasa` and `hanak` labels display the correct per-person prices for the selected class.
-**Actual Result:** `cgerbong` selection triggers `kelasActionPerformed` which queries `harga` table and sets `hdewasa`/`hanak` labels. Spinners `sdewasa`/`sanak` trigger `dewasa()`/`anak()` methods which use these labels' values to calculate `ltotal`. Logic appears correct.
-**Status:** Pass
+**Judul:** Verifikasi perhitungan harga dinamis berdasarkan kereta, kelas, dan jumlah penumpang.
+**Prakondisi:**
+    - Pengguna sudah login dan berada di layar Beranda.
+    - Harga yang diketahui ada di tabel `harga` untuk kelas dan status dewasa/anak yang berbeda.
+**Langkah-langkah:**
+    1. Pilih "Kereta Api".
+    2. Pilih "Gerbong" (misalnya, "Eksekutif 1").
+    3. Atur spinner "Dewasa" ke 1, "Anak-anak" ke 0. Catat "Total".
+    4. Ubah spinner "Dewasa" ke 2. Verifikasi "Total" menjadi dua kali lipat.
+    5. Atur spinner "Anak-anak" ke 1. Verifikasi "Total" bertambah sebesar harga anak untuk kelas tersebut.
+    6. Ubah "Gerbong" ke kelas lain (misalnya, "Ekonomi 1").
+    7. Verifikasi "Total" diperbarui berdasarkan harga kelas baru untuk jumlah dewasa dan anak-anak saat ini.
+**Hasil yang Diharapkan:**
+    - Kolom "Total" diperbarui dengan benar dan dinamis saat kereta, kelas, dan jumlah penumpang berubah, mencerminkan harga dari tabel `harga`.
+    - Label `hdewasa` dan `hanak` menampilkan harga per orang yang benar untuk kelas yang dipilih.
+**Hasil Aktual:** Pemilihan `cgerbong` memicu `kelasActionPerformed` yang menjalankan kueri ke tabel `harga` dan mengatur label `hdewasa`/`hanak`. Spinner `sdewasa`/`sanak` memicu metode `dewasa()`/`anak()` yang menggunakan nilai label ini untuk menghitung `ltotal`. Logika tampak benar.
+**Status:** Lulus
 
 ---
 **ID:** TC_BOOK_009
-**Title:** Verify ticket generation process is invoked.
-**Preconditions:**
-    - A successful booking is made (as in TC_BOOK_001).
-**Steps:**
-    1. Complete all steps for a successful booking.
-    2. Click "Simpan".
-**Expected Result:**
-    - The `JasperFillManager.fillReport` and `JasperViewer.viewReport` methods are called with `src/report/Tiket.jasper` and the correct passenger ID parameter.
-    - (Conceptual) A ticket would be displayed if a display environment was available.
-**Actual Result:** The `simpan()` method, after a successful database INSERT, calls `JasperFillManager.fillReport` with "src/report/Tiket.jasper" and `JasperViewer.viewReport`. The passenger ID (`fid.getText()`) is correctly passed as a parameter.
-**Status:** Pass
+**Judul:** Verifikasi proses pembuatan tiket dipanggil.
+**Prakondisi:**
+    - Pemesanan berhasil dibuat (seperti pada TC_BOOK_001).
+**Langkah-langkah:**
+    1. Selesaikan semua langkah untuk pemesanan yang berhasil.
+    2. Klik "Simpan".
+**Hasil yang Diharapkan:**
+    - Metode `JasperFillManager.fillReport` dan `JasperViewer.viewReport` dipanggil dengan "src/report/Tiket.jasper" dan parameter ID penumpang yang benar.
+    - (Konseptual) Tiket akan ditampilkan jika lingkungan tampilan tersedia.
+**Hasil Aktual:** Metode `simpan()`, setelah INSERT database yang berhasil, memanggil `JasperFillManager.fillReport` dengan "src/report/Tiket.jasper" dan `JasperViewer.viewReport`. ID penumpang (`fid.getText()`) diteruskan dengan benar sebagai parameter.
+**Status:** Lulus
 
 ---
 
-## Admin Panel - User Management Scenarios
+## Skenario Panel Admin - Manajemen Pengguna
 
 ---
 **ID:** TC_ADMIN_USER_001
-**Title:** View list of admin users.
-**Preconditions:**
-    - User is logged in and on the Admin Panel screen (`Admin.java`).
-    - Admin users exist in the `admin` table.
-**Steps:**
-    1. Navigate to the Admin Panel.
-**Expected Result:**
-    - The table under the "Admin" titled border is populated with existing admin user data (No, Nama, Username, Password).
-**Actual Result:** The `Admin()` constructor calls `data()`, which executes `SELECT * FROM admin order by id ASC` and populates the `admin` JTable.
-**Status:** Pass
+**Judul:** Lihat daftar pengguna admin.
+**Prakondisi:**
+    - Pengguna sudah login dan berada di layar Panel Admin (`Admin.java`).
+    - Pengguna admin ada di tabel `admin`.
+**Langkah-langkah:**
+    1. Navigasi ke Panel Admin.
+**Hasil yang Diharapkan:**
+    - Tabel di bawah batas berjudul "Admin" diisi dengan data pengguna admin yang ada (No, Nama, Username, Password).
+**Hasil Aktual:** Konstruktor `Admin()` memanggil `data()`, yang menjalankan `SELECT * FROM admin order by id ASC` dan mengisi JTable `admin`.
+**Status:** Lulus
 
 ---
 **ID:** TC_ADMIN_USER_002
-**Title:** Add a new admin user with valid data.
-**Preconditions:**
-    - User is on the Admin Panel screen.
-**Steps:**
-    1. Enter a unique name in the "Nama" field.
-    2. Enter a unique username in the "Username" field.
-    3. Enter a password in the "Password" field.
-    4. Click the "Simpan" button under the "Admin" section.
-**Expected Result:**
-    - A success message "Berhasil" is displayed.
-    - The new admin user appears in the admin table.
-    - Input fields are cleared.
-**Actual Result:** `btnadminActionPerformed` in `Admin.java` executes an `INSERT INTO admin` query. On success, it shows "Berhasil" message, reloads the table using `data()`, and clears input fields using `bersih()`.
-**Status:** Pass
+**Judul:** Tambah pengguna admin baru dengan data valid.
+**Prakondisi:**
+    - Pengguna berada di layar Panel Admin.
+**Langkah-langkah:**
+    1. Masukkan nama unik di kolom "Nama".
+    2. Masukkan username unik di kolom "Username".
+    3. Masukkan password di kolom "Password".
+    4. Klik tombol "Simpan" di bawah bagian "Admin".
+**Hasil yang Diharapkan:**
+    - Pesan sukses "Berhasil" ditampilkan.
+    - Pengguna admin baru muncul di tabel admin.
+    - Kolom input dikosongkan.
+**Hasil Aktual:** `btnadminActionPerformed` di `Admin.java` menjalankan kueri `INSERT INTO admin`. Jika berhasil, ia menampilkan pesan "Berhasil", memuat ulang tabel menggunakan `data()`, dan mengosongkan kolom input menggunakan `bersih()`.
+**Status:** Lulus
 
 ---
 **ID:** TC_ADMIN_USER_003
-**Title:** Attempt to add an admin user with a username that already exists.
-**Preconditions:**
-    - User is on the Admin Panel screen.
-    - An admin user with username 'testuser' already exists.
-**Steps:**
-    1. Enter any name in "Nama".
-    2. Enter 'testuser' in "Username".
-    3. Enter any password in "Password".
-    4. Click "Simpan".
-**Expected Result:**
-    - An error message is displayed (likely a database constraint violation error for unique username).
-    - The user is not added to the table.
-**Actual Result:** `btnadminActionPerformed` attempts `INSERT`. If the username already exists and the `username` column in the `admin` table has a UNIQUE constraint, the database will reject the insert. The `catch(SQLException e)` block will display a `JOptionPane` containing the SQL error message (e.g., "Duplicate entry..."). The table will not show the new user.
-**Status:** Pass
+**Judul:** Upaya menambah pengguna admin dengan username yang sudah ada.
+**Prakondisi:**
+    - Pengguna berada di layar Panel Admin.
+    - Pengguna admin dengan username 'testuser' sudah ada.
+**Langkah-langkah:**
+    1. Masukkan nama apa pun di "Nama".
+    2. Masukkan 'testuser' di "Username".
+    3. Masukkan password apa pun di "Password".
+    4. Klik "Simpan".
+**Hasil yang Diharapkan:**
+    - Pesan kesalahan ditampilkan (kemungkinan kesalahan pelanggaran batasan database untuk username unik).
+    - Pengguna tidak ditambahkan ke tabel.
+**Hasil Aktual:** `btnadminActionPerformed` mencoba `INSERT`. Jika username sudah ada dan kolom `username` di tabel `admin` memiliki batasan UNIQUE, database akan menolak penyisipan. Blok `catch(SQLException e)` akan menampilkan `JOptionPane` yang berisi pesan kesalahan SQL (misalnya, "Duplicate entry..."). Tabel tidak akan menampilkan pengguna baru.
+**Status:** Lulus
 
 ---
 **ID:** TC_ADMIN_USER_004
-**Title:** Attempt to add an admin user with an empty username.
-**Preconditions:**
-    - User is on the Admin Panel screen.
-**Steps:**
-    1. Enter any name in "Nama".
-    2. Leave "Username" empty.
-    3. Enter any password in "Password".
-    4. Click "Simpan".
-**Expected Result:**
-    - An error message is displayed (database error for non-nullable field or specific validation).
-    - The user is not added.
-**Actual Result:** `btnadminActionPerformed` attempts `INSERT` with an empty string for username. If the `username` column in the `admin` table is `NOT NULL` and does not allow empty strings, the database will reject it. The `catch(SQLException e)` block will show the SQL error. The user is not added.
-**Status:** Pass
+**Judul:** Upaya menambah pengguna admin dengan username kosong.
+**Prakondisi:**
+    - Pengguna berada di layar Panel Admin.
+**Langkah-langkah:**
+    1. Masukkan nama apa pun di "Nama".
+    2. Biarkan "Username" kosong.
+    3. Masukkan password apa pun di "Password".
+    4. Klik "Simpan".
+**Hasil yang Diharapkan:**
+    - Pesan kesalahan ditampilkan (kesalahan database untuk kolom non-nullable atau validasi spesifik).
+    - Pengguna tidak ditambahkan.
+**Hasil Aktual:** `btnadminActionPerformed` mencoba `INSERT` dengan string kosong untuk username. Jika kolom `username` di tabel `admin` adalah `NOT NULL` dan tidak mengizinkan string kosong, database akan menolaknya. Blok `catch(SQLException e)` akan menampilkan kesalahan SQL. Pengguna tidak ditambahkan.
+**Status:** Lulus
 
 ---
 **ID:** TC_ADMIN_USER_005
-**Title:** Attempt to add an admin user with an empty password.
-**Preconditions:**
-    - User is on the Admin Panel screen.
-**Steps:**
-    1. Enter any name in "Nama".
-    2. Enter a unique username in "Username".
-    3. Leave "Password" empty.
-    4. Click "Simpan".
-**Expected Result:**
-    - User is added (password might be stored as empty string if allowed by DB). Or an error if password has constraints.
-    - *Self-correction: The application saves empty passwords without error.*
-**Actual Result:** `btnadminActionPerformed` attempts `INSERT` with an empty string for the password. Standard database configurations for password fields (VARCHAR) typically allow empty strings. The insert succeeds, "Berhasil" is shown, and the table is updated.
-**Status:** Pass
+**Judul:** Upaya menambah pengguna admin dengan password kosong.
+**Prakondisi:**
+    - Pengguna berada di layar Panel Admin.
+**Langkah-langkah:**
+    1. Masukkan nama apa pun di "Nama".
+    2. Masukkan username unik di "Username".
+    3. Biarkan "Password" kosong.
+    4. Klik "Simpan".
+**Hasil yang Diharapkan:**
+    - Pengguna ditambahkan (password mungkin disimpan sebagai string kosong jika diizinkan oleh DB). Atau kesalahan jika password memiliki batasan.
+    - *Koreksi mandiri: Aplikasi menyimpan password kosong tanpa kesalahan.*
+**Hasil Aktual:** `btnadminActionPerformed` mencoba `INSERT` dengan string kosong untuk password. Konfigurasi database standar untuk kolom password (VARCHAR) biasanya mengizinkan string kosong. Penyisipan berhasil, "Berhasil" ditampilkan, dan tabel diperbarui.
+**Status:** Lulus
 
 ---
 **ID:** TC_ADMIN_USER_006
-**Title:** Edit an existing admin user's details.
-**Preconditions:**
-    - User is on the Admin Panel screen.
-    - At least one admin user exists.
-**Steps:**
-    1. Click on an existing admin user in the table.
-    2. The user's details populate the "Nama", "Username", "Password" fields. The ID is stored in `bayangan1`.
-    3. Modify the "Nama" field.
-    4. Modify the "Password" field.
-    5. Click the "Edit" button.
-**Expected Result:**
-    - A success message "Berhasil" is displayed.
-    - The admin table refreshes and shows the updated details for that user.
-    - Input fields are cleared.
-**Actual Result:** `adminMouseClicked` populates fields including `bayangan1` (ID). `editActionPerformed` executes `UPDATE admin ... WHERE id='...'`. On success, "Berhasil" is shown, table is reloaded via `data()`, and fields cleared via `bersih()`.
-**Status:** Pass
+**Judul:** Edit detail pengguna admin yang ada.
+**Prakondisi:**
+    - Pengguna berada di layar Panel Admin.
+    - Setidaknya satu pengguna admin ada.
+**Langkah-langkah:**
+    1. Klik pengguna admin yang ada di tabel.
+    2. Detail pengguna mengisi kolom "Nama", "Username", "Password". ID disimpan di `bayangan1`.
+    3. Ubah kolom "Nama".
+    4. Ubah kolom "Password".
+    5. Klik tombol "Edit".
+**Hasil yang Diharapkan:**
+    - Pesan sukses "Berhasil" ditampilkan.
+    - Tabel admin disegarkan dan menampilkan detail yang diperbarui untuk pengguna tersebut.
+    - Kolom input dikosongkan.
+**Hasil Aktual:** `adminMouseClicked` mengisi kolom termasuk `bayangan1` (ID). `editActionPerformed` menjalankan `UPDATE admin ... WHERE id='...'`. Jika berhasil, "Berhasil" ditampilkan, tabel dimuat ulang melalui `data()`, dan kolom dikosongkan melalui `bersih()`.
+**Status:** Lulus
 
 ---
 **ID:** TC_ADMIN_USER_007
-**Title:** Delete an admin user.
-**Preconditions:**
-    - User is on the Admin Panel screen.
-    - At least one admin user exists that can be deleted.
-**Steps:**
-    1. Click on an existing admin user in the table to select them.
-    2. Click the "Hapus" button.
-**Expected Result:**
-    - A success message "Berhasil" is displayed.
-    - The admin table refreshes and the selected user is no longer listed.
-    - Input fields are cleared.
-**Actual Result:** `adminMouseClicked` populates `bayangan1` (ID). `hapusActionPerformed` executes `DELETE FROM admin WHERE id='...'`. On success, "Berhasil" is shown, table reloaded via `data()`, and fields cleared via `bersih()`.
-**Status:** Pass
+**Judul:** Hapus pengguna admin.
+**Prakondisi:**
+    - Pengguna berada di layar Panel Admin.
+    - Setidaknya satu pengguna admin ada yang dapat dihapus.
+**Langkah-langkah:**
+    1. Klik pengguna admin yang ada di tabel untuk memilihnya.
+    2. Klik tombol "Hapus".
+**Hasil yang Diharapkan:**
+    - Pesan sukses "Berhasil" ditampilkan.
+    - Tabel admin disegarkan dan pengguna yang dipilih tidak lagi terdaftar.
+    - Kolom input dikosongkan.
+**Hasil Aktual:** `adminMouseClicked` mengisi `bayangan1` (ID). `hapusActionPerformed` menjalankan `DELETE FROM admin WHERE id='...'`. Jika berhasil, "Berhasil" ditampilkan, tabel dimuat ulang melalui `data()`, dan kolom dikosongkan melalui `bersih()`.
+**Status:** Lulus
 
 ---
 
-## Admin Panel - Price Management Scenarios
+## Skenario Panel Admin - Manajemen Harga
 
 ---
 **ID:** TC_ADMIN_PRICE_001
-**Title:** View list of prices.
-**Preconditions:**
-    - User is on the Admin Panel screen.
-    - Price data exists in the `harga` table.
-**Steps:**
-    1. Navigate to the Admin Panel.
-**Expected Result:**
-    - The table under the "Harga" titled border is populated with existing price data (No, Status, Kelas, Harga).
-**Actual Result:** The `Admin()` constructor calls `data_harga()`, which executes `SELECT * FROM harga` and populates the `tableharga` JTable.
-**Status:** Pass
+**Judul:** Lihat daftar harga.
+**Prakondisi:**
+    - Pengguna berada di layar Panel Admin.
+    - Data harga ada di tabel `harga`.
+**Langkah-langkah:**
+    1. Navigasi ke Panel Admin.
+**Hasil yang Diharapkan:**
+    - Tabel di bawah batas berjudul "Harga" diisi dengan data harga yang ada (No, Status, Kelas, Harga).
+**Hasil Aktual:** Konstruktor `Admin()` memanggil `data_harga()`, yang menjalankan `SELECT * FROM harga` dan mengisi JTable `tableharga`.
+**Status:** Lulus
 
 ---
 **ID:** TC_ADMIN_PRICE_002
-**Title:** Edit an existing price for a specific class and status.
-**Preconditions:**
-    - User is on the Admin Panel screen.
-    - Price data exists.
-**Steps:**
-    1. Click on a price entry in the "Harga" table.
-    2. The "Status", "Kelas", and "Harga" fields are populated. The ID is stored in `bayangan1`.
-    3. Modify the value in the "Harga" field to a new valid numeric value.
-    4. Click the "Simpan" button under the "Harga" section.
-**Expected Result:**
-    - A success message "Berhasil" is displayed.
-    - The "Harga" table refreshes and shows the updated price for that entry.
-    - Input fields are cleared.
-**Actual Result:** `tablehargaMouseClicked` populates fields from the selected row, storing the ID in `bayangan1`. The user edits the `harga` field. The "Simpan" button in the "Harga" panel (`simpanActionPerformed`) executes `UPDATE harga set harga='<new_value>' where id='<id_from_bayangan1>'`. On success, "Berhasil" is shown, `data_harga()` reloads the table, and `bersih()` clears fields.
-**Status:** Pass
+**Judul:** Edit harga yang ada untuk kelas dan status tertentu.
+**Prakondisi:**
+    - Pengguna berada di layar Panel Admin.
+    - Data harga ada.
+**Langkah-langkah:**
+    1. Klik entri harga di tabel "Harga".
+    2. Kolom "Status", "Kelas", dan "Harga" diisi. ID disimpan di `bayangan1`.
+    3. Ubah nilai di kolom "Harga" menjadi nilai numerik baru yang valid.
+    4. Klik tombol "Simpan" di bawah bagian "Harga".
+**Hasil yang Diharapkan:**
+    - Pesan sukses "Berhasil" ditampilkan.
+    - Tabel "Harga" disegarkan dan menampilkan harga yang diperbarui untuk entri tersebut.
+    - Kolom input dikosongkan.
+**Hasil Aktual:** `tablehargaMouseClicked` mengisi kolom dari baris yang dipilih, menyimpan ID di `bayangan1`. Pengguna mengedit kolom `harga`. Tombol "Simpan" di panel "Harga" (`simpanActionPerformed`) menjalankan `UPDATE harga set harga='<nilai_baru>' where id='<id_dari_bayangan1>'`. Jika berhasil, "Berhasil" ditampilkan, `data_harga()` memuat ulang tabel, dan `bersih()` mengosongkan kolom.
+**Status:** Lulus
 
 ---
 **ID:** TC_ADMIN_PRICE_003
-**Title:** Attempt to save a price with a non-numeric value.
-**Preconditions:**
-    - User is on the Admin Panel screen.
-    - Price data exists.
-**Steps:**
-    1. Select a price entry from the table.
-    2. Enter "abc" (or any non-numeric string) in the "Harga" field.
-    3. Click "Simpan" under the "Harga" section.
-**Expected Result:**
-    - An error message is displayed (likely a `NumberFormatException` or database error if it tries to save).
-    - The price is not updated.
-**Actual Result:** User enters "abc" into the `harga` field. `simpanActionPerformed` executes `UPDATE harga set harga='abc' ...`. If the `harga` column in the database is numeric, this will cause a SQL error. The `catch(SQLException e)` block displays a `JOptionPane` with the database error message. The price is not updated.
-**Status:** Pass
+**Judul:** Upaya menyimpan harga dengan nilai non-numerik.
+**Prakondisi:**
+    - Pengguna berada di layar Panel Admin.
+    - Data harga ada.
+**Langkah-langkah:**
+    1. Pilih entri harga dari tabel.
+    2. Masukkan "abc" (atau string non-numerik lainnya) di kolom "Harga".
+    3. Klik "Simpan" di bawah bagian "Harga".
+**Hasil yang Diharapkan:**
+    - Pesan kesalahan ditampilkan (kemungkinan `NumberFormatException` atau kesalahan database jika mencoba menyimpan).
+    - Harga tidak diperbarui.
+**Hasil Aktual:** Pengguna memasukkan "abc" ke dalam kolom `harga`. `simpanActionPerformed` menjalankan `UPDATE harga set harga='abc' ...`. Jika kolom `harga` di database adalah numerik, ini akan menyebabkan kesalahan SQL. Blok `catch(SQLException e)` menampilkan `JOptionPane` dengan pesan kesalahan database. Harga tidak diperbarui.
+**Status:** Lulus
 
 ---
 **ID:** TC_ADMIN_PRICE_004
-**Title:** Attempt to save a price with a negative value.
-**Preconditions:**
-    - User is on the Admin Panel screen.
-    - Price data exists.
-**Steps:**
-    1. Select a price entry from the table.
-    2. Enter "-100" in the "Harga" field.
-    3. Click "Simpan" under the "Harga" section.
-**Expected Result:**
-    - The price is updated to -100 (if no validation prevents it).
-    - *Self-correction: The application allows negative prices. This might be a point for improvement.*
-**Actual Result:** User enters "-100" into `harga` field. `simpanActionPerformed` executes `UPDATE harga set harga='-100' ...`. Assuming the `harga` column in the database is a signed numeric type, the update is successful. "Berhasil" is shown, table reloads. No application-level validation prevents negative prices.
-**Status:** Pass
+**Judul:** Upaya menyimpan harga dengan nilai negatif.
+**Prakondisi:**
+    - Pengguna berada di layar Panel Admin.
+    - Data harga ada.
+**Langkah-langkah:**
+    1. Pilih entri harga dari tabel.
+    2. Masukkan "-100" di kolom "Harga".
+    3. Klik "Simpan" di bawah bagian "Harga".
+**Hasil yang Diharapkan:**
+    - Harga diperbarui menjadi -100 (jika tidak ada validasi yang mencegahnya).
+    - *Koreksi mandiri: Aplikasi mengizinkan harga negatif.*
+**Hasil Aktual:** Pengguna memasukkan "-100" ke dalam kolom `harga`. `simpanActionPerformed` menjalankan `UPDATE harga set harga='-100' ...`. Dengan asumsi kolom `harga` di database adalah tipe numerik bertanda, pembaruan berhasil. "Berhasil" ditampilkan, tabel dimuat ulang. Tidak ada validasi tingkat aplikasi yang mencegah harga negatif.
+**Status:** Lulus
 
 ---
 
-## Passenger Data Management (Penumpang Screen) Scenarios
+## Skenario Manajemen Data Penumpang (Layar Penumpang)
 
 ---
 **ID:** TC_PASSENGER_001
-**Title:** View list of booked passengers.
-**Preconditions:**
-    - User is logged in.
-    - Passenger bookings exist in the `penumpang` table.
-**Steps:**
-    1. Navigate to the "Data Penumpang" screen from the menu.
-**Expected Result:**
-    - The table on the "Data Penumpang" screen is populated with all existing passenger booking details.
-**Actual Result:** The `Penumpang()` constructor calls its `data()` method, which executes `SELECT * FROM penumpang order by id ASC` and populates the `penumpang` JTable with the results.
-**Status:** Pass
+**Judul:** Lihat daftar penumpang yang telah memesan.
+**Prakondisi:**
+    - Pengguna sudah login.
+    - Pemesanan penumpang ada di tabel `penumpang`.
+**Langkah-langkah:**
+    1. Navigasi ke layar "Data Penumpang" dari menu.
+**Hasil yang Diharapkan:**
+    - Tabel di layar "Data Penumpang" diisi dengan semua detail pemesanan penumpang yang ada.
+**Hasil Aktual:** Konstruktor `Penumpang()` memanggil metode `data()`, yang menjalankan `SELECT * FROM penumpang order by id ASC` dan mengisi JTable `penumpang` dengan hasilnya.
+**Status:** Lulus
 
 ---
 **ID:** TC_PASSENGER_002
-**Title:** Verify that a newly booked ticket appears in the passenger list.
-**Preconditions:**
-    - User is logged in.
-**Steps:**
-    1. Note the current number of passengers in the "Data Penumpang" screen (or if it's empty).
-    2. Navigate to the Home screen and successfully book a new ticket (e.g., TC_BOOK_001).
-    3. After booking, navigate back to the "Data Penumpang" screen.
-**Expected Result:**
-    - The newly booked ticket's details appear as a new row in the passenger table.
-    - The passenger count increases by one.
-**Actual Result:** After a successful booking in `Home.java` (which inserts into `penumpang` table), navigating to `Penumpang` screen (which creates a new `Penumpang` instance) will call `data()`, repopulating the table with the latest data, including the new booking.
-**Status:** Pass
+**Judul:** Verifikasi bahwa tiket yang baru dipesan muncul di daftar penumpang.
+**Prakondisi:**
+    - Pengguna sudah login.
+**Langkah-langkah:**
+    1. Catat jumlah penumpang saat ini di layar "Data Penumpang" (atau jika kosong).
+    2. Navigasi ke layar Beranda dan berhasil memesan tiket baru (misalnya, TC_BOOK_001).
+    3. Setelah memesan, navigasi kembali ke layar "Data Penumpang".
+**Hasil yang Diharapkan:**
+    - Detail tiket yang baru dipesan muncul sebagai baris baru di tabel penumpang.
+    - Jumlah penumpang bertambah satu.
+**Hasil Aktual:** Setelah pemesanan berhasil di `Home.java` (yang menyisipkan ke tabel `penumpang`), menavigasi ke layar `Penumpang` (yang membuat instance `Penumpang` baru) akan memanggil `data()`, mengisi ulang tabel dengan data terbaru, termasuk pemesanan baru.
+**Status:** Lulus
 
 ---
 **ID:** TC_PASSENGER_003
-**Title:** Test the "Print" functionality for passenger data.
-**Preconditions:**
-    - User is on the "Data Penumpang" screen.
-**Steps:**
-    1. Click the "Print" button.
-**Expected Result:**
-    - The `JasperFillManager.fillReport` and `JasperViewer.viewReport` methods are called with `src/report/penumpang.jasper`.
-    - (Conceptual) A report listing all passengers would be displayed if a display environment was available.
-**Actual Result:** The "Print" button's action listener (`jButton1ActionPerformed`) calls `JasperFillManager.fillReport` with "src/report/penumpang.jasper" and `JasperViewer.viewReport`. This correctly invokes the reporting process.
-**Status:** Pass
+**Judul:** Uji fungsionalitas "Cetak" untuk data penumpang.
+**Prakondisi:**
+    - Pengguna berada di layar "Data Penumpang".
+**Langkah-langkah:**
+    1. Klik tombol "Cetak".
+**Hasil yang Diharapkan:**
+    - Metode `JasperFillManager.fillReport` dan `JasperViewer.viewReport` dipanggil dengan "src/report/penumpang.jasper".
+    - (Konseptual) Laporan yang mencantumkan semua penumpang akan ditampilkan jika lingkungan tampilan tersedia.
+**Hasil Aktual:** Listener aksi tombol "Cetak" (`jButton1ActionPerformed`) memanggil `JasperFillManager.fillReport` dengan "src/report/penumpang.jasper" dan `JasperViewer.viewReport`. Ini dengan benar memanggil proses pelaporan.
+**Status:** Lulus
 
 ---
 **ID:** TC_PASSENGER_004
-**Title:** Test the "Delete All Data" functionality.
-**Preconditions:**
-    - User is on the "Data Penumpang" screen.
-    - Some passenger data exists.
-**Steps:**
-    1. Click the "Hapus" (Delete All Data) button.
-    2. A confirmation dialog "Yakin Ingin Menghapus Data?" appears.
-    3. Click "Yes" (or the equivalent affirmative option).
-**Expected Result:**
-    - A success message "Berhasil" is displayed.
-    - The passenger table becomes empty.
-    - All records are deleted from the `penumpang` table in the database.
-**Actual Result:** The "Hapus" button (`HapusActionPerformed`) shows a `JOptionPane` confirmation. If "Yes" is selected, it executes `DELETE FROM penumpang`. On successful deletion, "Berhasil" is shown, and `data()` is called to refresh the table (which will now be empty).
-**Status:** Pass
+**Judul:** Uji fungsionalitas "Hapus Semua Data".
+**Prakondisi:**
+    - Pengguna berada di layar "Data Penumpang".
+    - Beberapa data penumpang ada.
+**Langkah-langkah:**
+    1. Klik tombol "Hapus" (Hapus Semua Data).
+    2. Dialog konfirmasi "Yakin Ingin Menghapus Data?" muncul.
+    3. Klik "Ya" (atau opsi afirmatif yang setara).
+**Hasil yang Diharapkan:**
+    - Pesan sukses "Berhasil" ditampilkan.
+    - Tabel penumpang menjadi kosong.
+    - Semua catatan dihapus dari tabel `penumpang` di database.
+**Hasil Aktual:** Tombol "Hapus" (`HapusActionPerformed`) menampilkan dialog konfirmasi `JOptionPane`. Jika "Ya" dipilih, ia menjalankan `DELETE FROM penumpang`. Setelah penghapusan berhasil, "Berhasil" ditampilkan, dan `data()` dipanggil untuk menyegarkan tabel (yang sekarang akan kosong).
+**Status:** Lulus
 
 ---
 **ID:** TC_PASSENGER_005
-**Title:** Test the "Delete All Data" functionality - Cancel.
-**Preconditions:**
-    - User is on the "Data Penumpang" screen.
-    - Some passenger data exists.
-**Steps:**
-    1. Click the "Hapus" (Delete All Data) button.
-    2. A confirmation dialog "Yakin Ingin Menghapus Data?" appears.
-    3. Click "No" (or the equivalent negative option).
-**Expected Result:**
-    - No success message regarding deletion is displayed.
-    - The passenger table remains unchanged.
-    - No records are deleted from the `penumpang` table.
-**Actual Result:** The "Hapus" button (`HapusActionPerformed`) shows a `JOptionPane` confirmation. If "No" is selected, the `if` condition `(pesan == JOptionPane.YES_OPTION)` is false, and no database operation or table refresh occurs beyond the initial load.
-**Status:** Pass
+**Judul:** Uji fungsionalitas "Hapus Semua Data" - Batal.
+**Prakondisi:**
+    - Pengguna berada di layar "Data Penumpang".
+    - Beberapa data penumpang ada.
+**Langkah-langkah:**
+    1. Klik tombol "Hapus" (Hapus Semua Data).
+    2. Dialog konfirmasi "Yakin Ingin Menghapus Data?" muncul.
+    3. Klik "Tidak" (atau opsi negatif yang setara).
+**Hasil yang Diharapkan:**
+    - Tidak ada pesan sukses mengenai penghapusan yang ditampilkan.
+    - Tabel penumpang tetap tidak berubah.
+    - Tidak ada catatan yang dihapus dari tabel `penumpang`.
+**Hasil Aktual:** Tombol "Hapus" (`HapusActionPerformed`) menampilkan dialog konfirmasi `JOptionPane`. Jika "Tidak" dipilih, kondisi `if (pesan == JOptionPane.YES_OPTION)` bernilai false, dan tidak ada operasi database atau penyegaran tabel yang terjadi selain pemuatan awal.
+**Status:** Lulus
 
 ---
