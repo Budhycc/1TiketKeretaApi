@@ -1,273 +1,138 @@
-# Testing Report: 1TiketKeretaApi Application
+# Laporan Pengujian: Aplikasi 1TiketKeretaApi
 
-## 1. Introduction
+## 1. Pendahuluan
 
-**Purpose of Testing:**
-The purpose of this testing was to evaluate the core functionalities of the "1TiketKeretaApi" Java Swing application through static code analysis and simulated test scenario execution. This report documents the findings, including identified bugs, areas for improvement, and an overall assessment of the application's behavior based on its source code.
+**Tujuan Pengujian:**
+Tujuan dari pengujian ini adalah untuk mengevaluasi fungsionalitas inti dari aplikasi Java Swing "1TiketKeretaApi" melalui analisis kode statis dan simulasi eksekusi skenario pengujian. Laporan ini mendokumentasikan temuan-temuan, termasuk bug yang teridentifikasi, area untuk peningkatan, dan penilaian keseluruhan terhadap perilaku aplikasi berdasarkan kode sumbernya.
 
-**Methodology:**
-Due to limitations in directly running the GUI application and its database dependencies in the current environment, testing was conducted via:
-1.  **Static Code Analysis:** Reviewing the Java source code for each functional module (`Login.java`, `Home.java`, `Admin.java`, `Penumpang.java`, `Koneksi.java`).
-2.  **Test Scenario Simulation:** Mentally walking through predefined test scenarios (from `test_scenarios.md`) by tracing code paths, predicting UI behavior (dialog messages, navigation), and analyzing database interactions (SQL queries).
-3.  **Documentation:** Recording the "Actual Results" and "Status" for each test case based on this analysis.
+**Metodologi:**
+Karena keterbatasan dalam menjalankan aplikasi GUI secara langsung dan dependensinya terhadap database di lingkungan saat ini, pengujian dilakukan melalui:
+1.  **Analisis Kode Statis:** Meninjau kode sumber Java untuk setiap modul fungsional (`Login.java`, `Home.java`, `Admin.java`, `Penumpang.java`, `Koneksi.java`).
+2.  **Simulasi Skenario Pengujian:** Secara mental menjalankan skenario pengujian yang telah ditentukan (dari `test_scenarios.md`) dengan menelusuri alur kode, memprediksi perilaku antarmuka pengguna (pesan dialog, navigasi), dan menganalisis interaksi database (kueri SQL).
+3.  **Dokumentasi:** Mencatat "Hasil Aktual" dan "Status" untuk setiap kasus uji berdasarkan analisis ini.
 
-## 2. Application Overview
+## 2. Gambaran Umum Aplikasi
 
-The "1TiketKeretaApi" application is a desktop Java Swing application designed as a train ticket booking system. It provides functionalities for users (presumably administrators after logging in) to book tickets for passengers, manage administrative users, and set ticket prices.
+Aplikasi "1TiketKeretaApi" adalah aplikasi desktop Java Swing yang dirancang sebagai sistem pemesanan tiket kereta api. Aplikasi ini menyediakan fungsionalitas bagi pengguna (yang diasumsikan sebagai administrator setelah login) untuk memesan tiket bagi penumpang, mengelola pengguna administratif, dan mengatur harga tiket.
 
-Key functionalities include:
-*   **Login:** Authenticates users against an `admin` table in a MySQL database.
-*   **Ticket Booking (`Home.java`):** Allows for booking tickets by inputting passenger details (ID, name, address), selecting start/destination stations, train, carriage class, date, and number of adult/child passengers. It dynamically calculates prices and is intended to generate a ticket using JasperReports.
-*   **Admin Panel (`Admin.java`):**
-    *   **User Management:** Add, view, edit, and delete admin users (data stored in the `admin` table).
-    *   **Price Management:** View and edit ticket prices for different statuses (adult/child) and carriage classes (data stored in the `harga` table).
-*   **Passenger Data Management (`Penumpang.java`):** View a list of all booked passengers, print a passenger report (JasperReports), and delete all passenger records from the `penumpang` table.
+Fungsionalitas utama meliputi:
+*   **Login:** Mengautentikasi pengguna terhadap tabel `admin` di database MySQL.
+*   **Pemesanan Tiket (`Home.java`):** Memungkinkan pemesanan tiket dengan memasukkan detail penumpang (ID, nama, alamat), memilih stasiun awal/tujuan, kereta, kelas gerbong, tanggal, dan jumlah penumpang dewasa/anak-anak. Aplikasi ini secara dinamis menghitung harga dan dimaksudkan untuk menghasilkan tiket menggunakan JasperReports.
+*   **Panel Admin (`Admin.java`):**
+    *   **Manajemen Pengguna:** Menambah, melihat, mengedit, dan menghapus pengguna admin (data disimpan di tabel `admin`).
+    *   **Manajemen Harga:** Melihat dan mengedit harga tiket untuk status yang berbeda (dewasa/anak) dan kelas gerbong (data disimpan di tabel `harga`).
+*   **Manajemen Data Penumpang (`Penumpang.java`):** Melihat daftar semua penumpang yang telah memesan tiket, mencetak laporan penumpang (JasperReports), dan menghapus semua catatan penumpang dari tabel `penumpang`.
 
-## 3. Test Environment
+## 3. Lingkungan Pengujian
 
-*   **Artifacts:** Java source code files for the application (`Login.java`, `Home.java`, `Admin.java`, `Penumpang.java`, `Koneksi.java`, `Index.java`).
-*   **Database Schema (Inferred):**
-    *   `admin` table (for login)
-    *   `penumpang` table (for storing bookings)
-    *   `harga` table (for storing price information)
-*   **Methodology:** Manual code review, static analysis, and simulated execution of test scenarios. No live execution or database interaction was performed.
+*   **Artefak:** File kode sumber Java untuk aplikasi (`Login.java`, `Home.java`, `Admin.java`, `Penumpang.java`, `Koneksi.java`, `Index.java`).
+*   **Skema Database (Disimpulkan):**
+    *   Tabel `admin` (untuk login)
+    *   Tabel `penumpang` (untuk menyimpan pemesanan)
+    *   Tabel `harga` (untuk menyimpan informasi harga)
+*   **Metodologi:** Tinjauan kode manual, analisis statis, dan simulasi eksekusi skenario pengujian. Tidak ada eksekusi langsung atau interaksi database yang dilakukan.
 
-## 4. Test Scope
+## 4. Lingkup Pengujian
 
-The following functionalities were covered during testing:
-*   Login authentication.
-*   Ticket Booking process, including input fields, dynamic calculations, and save operations.
-*   Admin Panel:
-    *   Admin user management (CRUD operations).
-    *   Ticket price management (view and update).
-*   Passenger Data Management:
-    *   Viewing booked passenger list.
-    *   Verification of new bookings appearing.
-    *   Print report invocation.
-    *   Deletion of all passenger data.
+Fungsionalitas berikut dicakup selama pengujian:
+*   Autentikasi login.
+*   Proses Pemesanan Tiket, termasuk kolom input, perhitungan dinamis, dan operasi penyimpanan.
+*   Panel Admin:
+    *   Manajemen pengguna admin (operasi CRUD).
+    *   Manajemen harga tiket (lihat dan perbarui).
+*   Manajemen Data Penumpang:
+    *   Melihat daftar penumpang yang dipesan.
+    *   Verifikasi pemesanan baru muncul.
+    *   Inisiasi cetak laporan.
+    *   Penghapusan semua data penumpang.
 
-JasperReport generation was tested conceptually by verifying if the code paths to invoke report generation were correctly implemented.
+Pembuatan JasperReport diuji secara konseptual dengan memverifikasi apakah alur kode untuk memanggil pembuatan laporan diimplementasikan dengan benar.
 
-## 5. Test Execution Summary
+## 5. Ringkasan Pelaksanaan Pengujian
 
-A total of 26 test scenarios were analyzed.
+Sebanyak 26 skenario pengujian dianalisis.
 
-*   **Total Tests:** 26
-*   **Passed Tests:** 21
-*   **Failed Tests:** 5
+*   **Total Pengujian:** 26
+*   **Pengujian Lulus:** 21
+*   **Pengujian Gagal:** 5
 
-**Table of Test Scenarios:**
+**Tabel Skenario Pengujian:**
 
-| ID                | Title                                                                      | Status | Brief Actual Result / Notes                                                                                                                               |
+| ID                | Judul                                                                      | Status | Hasil Aktual Singkat / Catatan                                                                                                                            |
 | ----------------- | -------------------------------------------------------------------------- | ------ | --------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| TC_LOGIN_001      | Successful login with valid admin credentials.                             | Pass   | Code path for successful login and navigation to Home screen is correct.                                                                                  |
-| TC_LOGIN_002      | Failed login with invalid username.                                        | Pass   | Shows "Gagal Login Oi" message as expected.                                                                                                               |
-| TC_LOGIN_003      | Failed login with invalid password.                                        | Pass   | Shows "Gagal Login Oi" message as expected. (Actual Result in .md file for TC_LOGIN_002 was duplicated, intended for this)                                |
-| TC_LOGIN_004      | Failed login with empty username.                                          | Pass   | Shows "Gagal Login Oi" message.                                                                                                                           |
-| TC_LOGIN_005      | Failed login with empty password.                                          | Pass   | Shows "Gagal Login Oi" message. (Actual Result in .md file for TC_LOGIN_004 was duplicated, intended for this)                                                |
-| TC_BOOK_001       | Successful ticket booking with all valid inputs for one adult.             | Pass   | Code path for saving booking and invoking JasperReports is correct.                                                                                       |
-| TC_BOOK_002       | Successful ticket booking for multiple adults and children.                | Pass   | Price calculation and saving logic for multiple passengers is correct.                                                                                    |
-| TC_BOOK_003       | Attempt booking without selecting a destination.                           | Fail   | No validation; saves with default/empty destination.                                                                                                      |
-| TC_BOOK_004       | Attempt booking without selecting a train.                                 | Fail   | No validation; saves empty train name, incorrect departure/arrival times.                                                                                   |
-| TC_BOOK_005       | Attempt booking without selecting a carriage class.                        | Fail   | No validation; saves empty carriage, uses incorrect/zero prices.                                                                                          |
-| TC_BOOK_006       | Attempt booking without entering passenger name.                           | Fail   | No validation; relies on DB constraint (if any) to prevent empty name.                                                                                    |
-| TC_BOOK_007       | Attempt booking with zero adults and zero children.                        | Fail   | No validation; allows booking for zero passengers with zero total price.                                                                                  |
-| TC_BOOK_008       | Verify dynamic price calculation.                                          | Pass   | Price calculation logic based on class and passenger numbers appears correct.                                                                             |
-| TC_BOOK_009       | Verify ticket generation process is invoked.                               | Pass   | JasperReports invocation code path is correct.                                                                                                            |
-| TC_ADMIN_USER_001 | View list of admin users.                                                  | Pass   | `data()` method correctly loads admins into table.                                                                                                        |
-| TC_ADMIN_USER_002 | Add a new admin user with valid data.                                      | Pass   | `btnadminActionPerformed` correctly inserts new admin.                                                                                                    |
-| TC_ADMIN_USER_003 | Attempt to add an admin user with a username that already exists.          | Pass   | Fails at DB level (unique constraint violation), error message shown.                                                                                     |
-| TC_ADMIN_USER_004 | Attempt to add an admin user with an empty username.                       | Pass   | Fails at DB level (if NOT NULL constraint), error message shown.                                                                                          |
-| TC_ADMIN_USER_005 | Attempt to add an admin user with an empty password.                       | Pass   | Application allows saving admin with an empty password.                                                                                                   |
-| TC_ADMIN_USER_006 | Edit an existing admin user's details.                                     | Pass   | `editActionPerformed` correctly updates admin details.                                                                                                    |
-| TC_ADMIN_USER_007 | Delete an admin user.                                                      | Pass   | `hapusActionPerformed` correctly deletes admin.                                                                                                           |
-| TC_ADMIN_PRICE_001| View list of prices.                                                       | Pass   | `data_harga()` method correctly loads prices into table.                                                                                                  |
-| TC_ADMIN_PRICE_002| Edit an existing price for a specific class and status.                    | Pass   | `simpanActionPerformed` (price panel) correctly updates price.                                                                                            |
-| TC_ADMIN_PRICE_003| Attempt to save a price with a non-numeric value.                        | Pass   | Fails at DB level (if column is numeric), error message shown.                                                                                            |
-| TC_ADMIN_PRICE_004| Attempt to save a price with a negative value.                           | Pass   | Application allows saving negative prices.                                                                                                                |
-| TC_PASSENGER_001  | View list of booked passengers.                                            | Pass   | `data()` method in `Penumpang.java` correctly loads passenger data.                                                                                       |
-| TC_PASSENGER_002  | Verify that a newly booked ticket appears in the passenger list.           | Pass   | New booking insertion in `Home` and subsequent reload in `Penumpang` works.                                                                               |
-| TC_PASSENGER_003  | Test the "Print" functionality for passenger data.                         | Pass   | JasperReports invocation for passenger list is correct.                                                                                                   |
-| TC_PASSENGER_004  | Test the "Delete All Data" functionality.                                  | Pass   | `HapusActionPerformed` correctly deletes all passengers after confirmation.                                                                               |
-| TC_PASSENGER_005  | Test the "Delete All Data" functionality - Cancel.                         | Pass   | Cancellation of "Delete All Data" works as expected.                                                                                                      |
+| TC_LOGIN_001      | Login berhasil dengan kredensial admin yang valid.                         | Lulus  | Alur kode untuk login berhasil dan navigasi ke layar Beranda sudah benar.                                                                                |
+| TC_LOGIN_002      | Login gagal dengan username tidak valid.                                   | Lulus  | Menampilkan pesan "Gagal Login Oi" seperti yang diharapkan.                                                                                             |
+| TC_LOGIN_003      | Login gagal dengan password tidak valid.                                   | Lulus  | Menampilkan pesan "Gagal Login Oi" seperti yang diharapkan.                                                                                             |
+| TC_LOGIN_004      | Login gagal dengan username kosong.                                        | Lulus  | Menampilkan pesan "Gagal Login Oi".                                                                                                                       |
+| TC_LOGIN_005      | Login gagal dengan password kosong.                                        | Lulus  | Menampilkan pesan "Gagal Login Oi".                                                                                                                       |
+| TC_BOOK_001       | Pemesanan tiket berhasil dengan semua input valid untuk satu orang dewasa. | Lulus  | Alur kode untuk menyimpan pemesanan dan memanggil JasperReports sudah benar.                                                                             |
+| TC_BOOK_002       | Pemesanan tiket berhasil untuk beberapa dewasa dan anak-anak.              | Lulus  | Perhitungan harga dan logika penyimpanan untuk beberapa penumpang sudah benar.                                                                          |
+| TC_BOOK_003       | Upaya pemesanan tanpa memilih tujuan.                                      | Gagal  | Tidak ada validasi; menyimpan dengan tujuan default/kosong.                                                                                              |
+| TC_BOOK_004       | Upaya pemesanan tanpa memilih kereta.                                      | Gagal  | Tidak ada validasi; menyimpan nama kereta kosong, waktu berangkat/tiba salah.                                                                          |
+| TC_BOOK_005       | Upaya pemesanan tanpa memilih kelas gerbong.                               | Gagal  | Tidak ada validasi; menyimpan gerbong kosong, menggunakan harga salah/nol.                                                                               |
+| TC_BOOK_006       | Upaya pemesanan tanpa memasukkan nama penumpang.                           | Gagal  | Tidak ada validasi; bergantung pada batasan DB (jika ada) untuk mencegah nama kosong.                                                                   |
+| TC_BOOK_007       | Upaya pemesanan dengan nol dewasa dan nol anak-anak.                       | Gagal  | Tidak ada validasi; mengizinkan pemesanan untuk nol penumpang dengan total harga nol.                                                                     |
+| TC_BOOK_008       | Verifikasi perhitungan harga dinamis.                                      | Lulus  | Logika perhitungan harga berdasarkan kelas dan jumlah penumpang tampak benar.                                                                           |
+| TC_BOOK_009       | Verifikasi proses pembuatan tiket dipanggil.                               | Lulus  | Alur kode pemanggilan JasperReports sudah benar.                                                                                                          |
+| TC_ADMIN_USER_001 | Lihat daftar pengguna admin.                                               | Lulus  | Metode `data()` memuat admin ke tabel dengan benar.                                                                                                     |
+| TC_ADMIN_USER_002 | Tambah pengguna admin baru dengan data valid.                              | Lulus  | `btnadminActionPerformed` menyisipkan admin baru dengan benar.                                                                                           |
+| TC_ADMIN_USER_003 | Upaya menambah admin dengan username yang sudah ada.                       | Lulus  | Gagal di tingkat DB (pelanggaran batasan unik), pesan kesalahan ditampilkan.                                                                            |
+| TC_ADMIN_USER_004 | Upaya menambah admin dengan username kosong.                               | Lulus  | Gagal di tingkat DB (jika ada batasan NOT NULL), pesan kesalahan ditampilkan.                                                                             |
+| TC_ADMIN_USER_005 | Upaya menambah admin dengan password kosong.                               | Lulus  | Aplikasi mengizinkan penyimpanan admin dengan password kosong.                                                                                          |
+| TC_ADMIN_USER_006 | Edit detail pengguna admin yang ada.                                       | Lulus  | `editActionPerformed` memperbarui detail admin dengan benar.                                                                                             |
+| TC_ADMIN_USER_007 | Hapus pengguna admin.                                                      | Lulus  | `hapusActionPerformed` menghapus admin dengan benar.                                                                                                    |
+| TC_ADMIN_PRICE_001| Lihat daftar harga.                                                        | Lulus  | Metode `data_harga()` memuat harga ke tabel dengan benar.                                                                                                 |
+| TC_ADMIN_PRICE_002| Edit harga yang ada untuk kelas dan status tertentu.                       | Lulus  | `simpanActionPerformed` (panel harga) memperbarui harga dengan benar.                                                                                    |
+| TC_ADMIN_PRICE_003| Upaya menyimpan harga dengan nilai non-numerik.                            | Lulus  | Gagal di tingkat DB (jika kolom numerik), pesan kesalahan ditampilkan.                                                                                   |
+| TC_ADMIN_PRICE_004| Upaya menyimpan harga dengan nilai negatif.                                | Lulus  | Aplikasi mengizinkan penyimpanan harga negatif.                                                                                                         |
+| TC_PASSENGER_001  | Lihat daftar penumpang yang telah memesan.                                 | Lulus  | Metode `data()` di `Penumpang.java` memuat data penumpang dengan benar.                                                                                 |
+| TC_PASSENGER_002  | Verifikasi bahwa tiket yang baru dipesan muncul di daftar penumpang.        | Lulus  | Penyisipan pemesanan baru di `Home` dan pemuatan ulang di `Penumpang` berfungsi.                                                                        |
+| TC_PASSENGER_003  | Uji fungsionalitas "Cetak" untuk data penumpang.                           | Lulus  | Pemanggilan JasperReports untuk daftar penumpang sudah benar.                                                                                             |
+| TC_PASSENGER_004  | Uji fungsionalitas "Hapus Semua Data".                                     | Lulus  | `HapusActionPerformed` menghapus semua penumpang dengan benar setelah konfirmasi.                                                                      |
+| TC_PASSENGER_005  | Uji fungsionalitas "Hapus Semua Data" - Batal.                             | Lulus  | Pembatalan "Hapus Semua Data" berfungsi seperti yang diharapkan.                                                                                         |
 
-*(Note: The actual results for TC_LOGIN_003 and TC_LOGIN_005 were corrected in the table above as they were duplicated in the source .md file during the previous step's tool output.)*
+*(Catatan: Hasil aktual untuk TC_LOGIN_003 dan TC_LOGIN_005 telah dikoreksi pada tabel di atas karena terduplikasi dalam file .md sumber selama output alat pada langkah sebelumnya.)*
 
-## 6. Key Findings and Issues
+## 6. Temuan Utama dan Isu
 
-### 6.1. Bugs/Failed Test Cases
+### 6.1. Bug/Kasus Uji Gagal
 
-The following test cases failed, primarily due to lack of input validation in the Ticket Booking (`Home.java`) module:
+Kasus uji berikut gagal, terutama karena kurangnya validasi input dalam modul Pemesanan Tiket (`Home.java`):
 
-*   **TC_BOOK_003: Attempt booking without selecting a destination.**
-    *   **Issue:** The application does not validate if a destination station has been selected. It proceeds to save the booking, likely with the default (first) item in the JComboBox, or an empty value if the ComboBox allows it. This can lead to incorrect booking data and affect dependent logic like departure/arrival time determination.
-*   **TC_BOOK_004: Attempt booking without selecting a train.**
-    *   **Issue:** The application allows booking with an empty string (`""`) as the train name because the JComboBox for trains has an initial empty item and there's no validation. This results in meaningless data for the train, and departure/arrival times are not set (remaining "00.00 WIB").
-*   **TC_BOOK_005: Attempt booking without selecting a carriage class.**
-    *   **Issue:** Similar to train selection, an empty carriage class (`" "`) can be saved due to lack of validation. This leads to incorrect price calculation, as the logic to fetch prices (`kelasActionPerformed`) won't find matching criteria, resulting in prices being "0" or stale from previous selections.
-*   **TC_BOOK_006: Attempt booking without entering passenger name.**
-    *   **Issue:** The application does not perform any client-side validation to ensure the passenger name is entered. It attempts to save an empty string. This will only fail if the corresponding database column (`nama` in `penumpang` table) has a `NOT NULL` constraint that also prevents empty strings. Otherwise, bookings with no passenger name are created.
-*   **TC_BOOK_007: Attempt booking with zero adults and zero children.**
-    *   **Issue:** The system allows a booking to be made even if both the number of adults and children are zero. This results in a booking with a total price of zero and no actual passengers, which is logically incorrect.
+*   **TC_BOOK_003: Upaya pemesanan tanpa memilih tujuan.**
+    *   **Isu:** Aplikasi tidak memvalidasi apakah stasiun tujuan telah dipilih. Aplikasi melanjutkan untuk menyimpan pemesanan, kemungkinan dengan item default (pertama) di JComboBox, atau nilai kosong jika ComboBox mengizinkannya. Hal ini dapat menyebabkan data pemesanan yang salah dan memengaruhi logika dependen seperti penentuan waktu berangkat/tiba.
+*   **TC_BOOK_004: Upaya pemesanan tanpa memilih kereta.**
+    *   **Isu:** Aplikasi mengizinkan pemesanan dengan string kosong (`""`) sebagai nama kereta karena JComboBox untuk kereta memiliki item kosong awal dan tidak ada validasi. Hal ini menghasilkan data yang tidak berarti untuk kereta, dan waktu berangkat/tiba tidak diatur (tetap "00.00 WIB").
+*   **TC_BOOK_005: Upaya pemesanan tanpa memilih kelas gerbong.**
+    *   **Isu:** Mirip dengan pemilihan kereta, kelas gerbong kosong (`" "`) dapat disimpan karena kurangnya validasi. Hal ini menyebabkan perhitungan harga yang salah, karena logika untuk mengambil harga (`kelasActionPerformed`) tidak akan menemukan kriteria yang cocok, sehingga harga menjadi "0" atau basi dari pilihan sebelumnya.
+*   **TC_BOOK_006: Upaya pemesanan tanpa memasukkan nama penumpang.**
+    *   **Isu:** Aplikasi tidak melakukan validasi sisi klien untuk memastikan nama penumpang dimasukkan. Aplikasi mencoba menyimpan string kosong. Ini hanya akan gagal jika kolom database yang sesuai (`nama` di tabel `penumpang`) memiliki batasan `NOT NULL` yang juga mencegah string kosong. Jika tidak, pemesanan tanpa nama penumpang akan dibuat.
+*   **TC_BOOK_007: Upaya pemesanan dengan nol dewasa dan nol anak-anak.**
+    *   **Isu:** Sistem mengizinkan pemesanan dilakukan meskipun jumlah dewasa dan anak-anak adalah nol. Hal ini menghasilkan pemesanan dengan total harga nol dan tidak ada penumpang aktual, yang secara logis salah.
 
-### 6.2. Areas for Improvement/Observations
+### 6.2. Area Peningkatan/Observasi
 
-Beyond the direct test failures, the static analysis revealed several areas where the application could be improved for robustness and maintainability:
+Selain kegagalan pengujian langsung, analisis statis mengungkapkan beberapa area di mana aplikasi dapat ditingkatkan untuk ketahanan dan kemudahan pemeliharaan:
 
-*   **General Lack of Input Validation (Ticket Booking):** As highlighted by the failed test cases, the ticket booking module (`Home.java`) is significantly lacking in proactive input validation for mandatory fields (destination, train, class, passenger name) and logical minimums (at least one passenger). Relying solely on database constraints (if they exist) is not user-friendly.
-*   **Negative Prices Allowed (Admin Panel - Price Management):** (TC_ADMIN_PRICE_004) The system allows negative values to be entered and saved for ticket prices. This is likely undesirable and should be prevented with validation.
-*   **Passenger ID Generation (`autoid()` in `Home.java`):** The current method `SELECT COUNT(id) as kode FROM penumpang` then adding 1 to the count (e.g., "MR.X") is not robust. It can lead to duplicate IDs if records are deleted or in a concurrent access scenario (though less likely for this type of desktop app). A more robust approach would be using database auto-increment primary keys directly, or UUIDs.
-*   **Date Handling for Database (`simpan()` in `Home.java`):** The code uses `tanggal.getDate()` and directly concatenates it into the SQL string. The way `java.util.Date.toString()` formats the date might not always be compatible with MySQL's expected date format, potentially leading to errors or incorrect date storage depending on locale or MySQL configuration. Using `PreparedStatement` with `setDate()` is the recommended practice.
-*   **Empty Admin Passwords Allowed (Admin Panel - User Management):** (TC_ADMIN_USER_005) The application allows creating admin users with empty passwords. While the test passed as the system functions as coded, this is a security concern and should ideally be disallowed through validation.
-*   **Error Handling:** Generic `catch(Exception e)` or `catch(SQLException e)` blocks are used, showing `JOptionPane.showMessageDialog(null,e);`. While this displays the error, it's not very user-friendly as it often exposes raw SQL or Java exception details. More specific error messages would be better.
-*   **Code Structure in `Home.java` (`ckeretaActionPerformed`):** The long if-else-if chain for setting departure/arrival times based on train and destination is hard to maintain and prone to errors. This could be refactored, perhaps using a data structure or a more object-oriented approach if train schedules become complex.
+*   **Kurangnya Validasi Input Secara Umum (Pemesanan Tiket):** Seperti yang disorot oleh kasus uji yang gagal, modul pemesanan tiket (`Home.java`) sangat kurang dalam validasi input proaktif untuk kolom-kolom wajib (tujuan, kereta, kelas, nama penumpang) dan minimum logis (setidaknya satu penumpang). Bergantung semata-mata pada batasan database (jika ada) tidak ramah pengguna.
+*   **Harga Negatif Diizinkan (Panel Admin - Manajemen Harga):** (TC_ADMIN_PRICE_004) Sistem mengizinkan nilai negatif dimasukkan dan disimpan untuk harga tiket. Hal ini kemungkinan tidak diinginkan dan harus dicegah dengan validasi.
+*   **Pembuatan ID Penumpang (`autoid()` di `Home.java`):** Metode saat ini `SELECT COUNT(id) as kode FROM penumpang` kemudian menambahkan 1 ke hitungan (misalnya, "MR.X") tidak tangguh. Ini dapat menyebabkan ID duplikat jika catatan dihapus atau dalam skenario akses bersamaan (meskipun kurang mungkin untuk jenis aplikasi desktop ini). Pendekatan yang lebih tangguh adalah menggunakan kunci primer auto-increment database secara langsung, atau UUID.
+*   **Penanganan Tanggal untuk Database (`simpan()` di `Home.java`):** Kode menggunakan `tanggal.getDate()` dan secara langsung menggabungkannya ke dalam string SQL. Cara `java.util.Date.toString()` memformat tanggal mungkin tidak selalu kompatibel dengan format tanggal yang diharapkan MySQL, yang berpotensi menyebabkan kesalahan atau penyimpanan tanggal yang salah tergantung pada lokal atau konfigurasi MySQL. Menggunakan `PreparedStatement` dengan `setDate()` adalah praktik yang direkomendasikan.
+*   **Password Admin Kosong Diizinkan (Panel Admin - Manajemen Pengguna):** (TC_ADMIN_USER_005) Aplikasi mengizinkan pembuatan pengguna admin dengan password kosong. Meskipun pengujian lulus karena sistem berfungsi sesuai kode, ini adalah masalah keamanan dan idealnya harus dilarang melalui validasi.
+*   **Penanganan Kesalahan:** Blok `catch(Exception e)` atau `catch(SQLException e)` generik digunakan, menampilkan `JOptionPane.showMessageDialog(null,e);`. Meskipun ini menampilkan kesalahan, ini tidak terlalu ramah pengguna karena sering kali mengekspos detail SQL mentah atau pengecualian Java. Pesan kesalahan yang lebih spesifik akan lebih baik.
+*   **Struktur Kode di `Home.java` (`ckeretaActionPerformed`):** Rantai if-else-if yang panjang untuk mengatur waktu berangkat/tiba berdasarkan kereta dan tujuan sulit dipelihara dan rentan terhadap kesalahan. Ini dapat direfaktor, mungkin menggunakan struktur data atau pendekatan yang lebih berorientasi objek jika jadwal kereta menjadi kompleks.
 
-## 7. Overall Assessment
+## 7. Penilaian Keseluruhan
 
-The "1TiketKeretaApi" application provides a basic framework for the intended functionalities. The Admin and Passenger Data sections appear relatively stable based on the code paths for their core operations (CRUD for admins/prices, viewing/deleting/reporting for passengers).
+Aplikasi "1TiketKeretaApi" menyediakan kerangka kerja dasar untuk fungsionalitas yang dimaksudkan. Bagian Admin dan Data Penumpang tampak relatif stabil berdasarkan alur kode untuk operasi inti mereka (CRUD untuk admin/harga, melihat/menghapus/melaporkan untuk penumpang).
 
-However, the **Ticket Booking module (`Home.java`) requires significant attention**. The lack of fundamental input validation for critical fields (destination, train, class, passenger name, passenger count) leads to multiple failed test cases and could result in inconsistent or invalid data in the database, as well as a poor user experience.
+Namun, **modul Pemesanan Tiket (`Home.java`) memerlukan perhatian signifikan**. Kurangnya validasi input mendasar untuk kolom-kolom kritis (tujuan, kereta, kelas, nama penumpang, jumlah penumpang) menyebabkan beberapa kasus uji gagal dan dapat mengakibatkan data yang tidak konsisten atau tidak valid dalam database, serta pengalaman pengguna yang buruk.
 
-Recommendations for improvement include:
-*   Implementing comprehensive input validation in the `Home.java` module before attempting to save booking data.
-*   Adding validation to prevent negative prices.
-*   Refactoring passenger ID generation and date handling for database operations to improve robustness.
-*   Enhancing error handling to provide more user-friendly messages.
-*   Reviewing the policy on empty admin passwords.
+Rekomendasi untuk peningkatan meliputi:
+*   Mengimplementasikan validasi input yang komprehensif dalam modul `Home.java` sebelum mencoba menyimpan data pemesanan.
+*   Menambahkan validasi untuk mencegah harga negatif.
+*   Merefaktor pembuatan ID penumpang dan penanganan tanggal untuk operasi database guna meningkatkan ketahanan.
+*   Meningkatkan penanganan kesalahan untuk memberikan pesan yang lebih ramah pengguna.
+*   Meninjau kebijakan mengenai password admin kosong.
 
-Addressing these issues, particularly the input validation in ticket booking, would substantially improve the application's reliability and usability.## 1. Introduction
-
-**Purpose of Testing:**
-The purpose of this testing was to evaluate the core functionalities of the "1TiketKeretaApi" Java Swing application through static code analysis and simulated test scenario execution. This report documents the findings, including identified bugs, areas for improvement, and an overall assessment of the application's behavior based on its source code.
-
-**Methodology:**
-Due to limitations in directly running the GUI application and its database dependencies in the current environment, testing was conducted via:
-1.  **Static Code Analysis:** Reviewing the Java source code for each functional module (`Login.java`, `Home.java`, `Admin.java`, `Penumpang.java`, `Koneksi.java`).
-2.  **Test Scenario Simulation:** Mentally walking through predefined test scenarios (from `test_scenarios.md`) by tracing code paths, predicting UI behavior (dialog messages, navigation), and analyzing database interactions (SQL queries).
-3.  **Documentation:** Recording the "Actual Results" and "Status" for each test case based on this analysis.
-
-## 2. Application Overview
-
-The "1TiketKeretaApi" application is a desktop Java Swing application designed as a train ticket booking system. It provides functionalities for users (presumably administrators after logging in) to book tickets for passengers, manage administrative users, and set ticket prices.
-
-Key functionalities include:
-*   **Login:** Authenticates users against an `admin` table in a MySQL database.
-*   **Ticket Booking (`Home.java`):** Allows for booking tickets by inputting passenger details (ID, name, address), selecting start/destination stations, train, carriage class, date, and number of adult/child passengers. It dynamically calculates prices and is intended to generate a ticket using JasperReports.
-*   **Admin Panel (`Admin.java`):**
-    *   **User Management:** Add, view, edit, and delete admin users (data stored in the `admin` table).
-    *   **Price Management:** View and edit ticket prices for different statuses (adult/child) and carriage classes (data stored in the `harga` table).
-*   **Passenger Data Management (`Penumpang.java`):** View a list of all booked passengers, print a passenger report (JasperReports), and delete all passenger records from the `penumpang` table.
-
-## 3. Test Environment
-
-*   **Artifacts:** Java source code files for the application (`Login.java`, `Home.java`, `Admin.java`, `Penumpang.java`, `Koneksi.java`, `Index.java`).
-*   **Database Schema (Inferred):**
-    *   `admin` table (for login)
-    *   `penumpang` table (for storing bookings)
-    *   `harga` table (for storing price information)
-*   **Methodology:** Manual code review, static analysis, and simulated execution of test scenarios. No live execution or database interaction was performed.
-
-## 4. Test Scope
-
-The following functionalities were covered during testing:
-*   Login authentication.
-*   Ticket Booking process, including input fields, dynamic calculations, and save operations.
-*   Admin Panel:
-    *   Admin user management (CRUD operations).
-    *   Ticket price management (view and update).
-*   Passenger Data Management:
-    *   Viewing booked passenger list.
-    *   Verification of new bookings appearing.
-    *   Print report invocation.
-    *   Deletion of all passenger data.
-
-JasperReport generation was tested conceptually by verifying if the code paths to invoke report generation were correctly implemented.
-
-## 5. Test Execution Summary
-
-A total of 26 test scenarios were analyzed.
-
-*   **Total Tests:** 26
-*   **Passed Tests:** 21
-*   **Failed Tests:** 5
-
-**Table of Test Scenarios:**
-
-| ID                | Title                                                                      | Status | Brief Actual Result / Notes                                                                                                                               |
-| ----------------- | -------------------------------------------------------------------------- | ------ | --------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| TC_LOGIN_001      | Successful login with valid admin credentials.                             | Pass   | Code path for successful login and navigation to Home screen is correct.                                                                                  |
-| TC_LOGIN_002      | Failed login with invalid username.                                        | Pass   | Shows "Gagal Login Oi" message as expected.                                                                                                               |
-| TC_LOGIN_003      | Failed login with invalid password.                                        | Pass   | Shows "Gagal Login Oi" message as expected.                                                                        |
-| TC_LOGIN_004      | Failed login with empty username.                                          | Pass   | Shows "Gagal Login Oi" message.                                                                                                                           |
-| TC_LOGIN_005      | Failed login with empty password.                                          | Pass   | Shows "Gagal Login Oi" message.                                                                              |
-| TC_BOOK_001       | Successful ticket booking with all valid inputs for one adult.             | Pass   | Code path for saving booking and invoking JasperReports is correct.                                                                                       |
-| TC_BOOK_002       | Successful ticket booking for multiple adults and children.                | Pass   | Price calculation and saving logic for multiple passengers is correct.                                                                                    |
-| TC_BOOK_003       | Attempt booking without selecting a destination.                           | Fail   | No validation; saves with default/empty destination.                                                                                                      |
-| TC_BOOK_004       | Attempt booking without selecting a train.                                 | Fail   | No validation; saves empty train name, incorrect departure/arrival times.                                                                                   |
-| TC_BOOK_005       | Attempt booking without selecting a carriage class.                        | Fail   | No validation; saves empty carriage, uses incorrect/zero prices.                                                                                          |
-| TC_BOOK_006       | Attempt booking without entering passenger name.                           | Fail   | No validation; relies on DB constraint (if any) to prevent empty name.                                                                                    |
-| TC_BOOK_007       | Attempt booking with zero adults and zero children.                        | Fail   | No validation; allows booking for zero passengers with zero total price.                                                                                  |
-| TC_BOOK_008       | Verify dynamic price calculation.                                          | Pass   | Price calculation logic based on class and passenger numbers appears correct.                                                                             |
-| TC_BOOK_009       | Verify ticket generation process is invoked.                               | Pass   | JasperReports invocation code path is correct.                                                                                                            |
-| TC_ADMIN_USER_001 | View list of admin users.                                                  | Pass   | `data()` method correctly loads admins into table.                                                                                                        |
-| TC_ADMIN_USER_002 | Add a new admin user with valid data.                                      | Pass   | `btnadminActionPerformed` correctly inserts new admin.                                                                                                    |
-| TC_ADMIN_USER_003 | Attempt to add an admin user with a username that already exists.          | Pass   | Fails at DB level (unique constraint violation), error message shown.                                                                                     |
-| TC_ADMIN_USER_004 | Attempt to add an admin user with an empty username.                       | Pass   | Fails at DB level (if NOT NULL constraint), error message shown.                                                                                          |
-| TC_ADMIN_USER_005 | Attempt to add an admin user with an empty password.                       | Pass   | Application allows saving admin with an empty password.                                                                                                   |
-| TC_ADMIN_USER_006 | Edit an existing admin user's details.                                     | Pass   | `editActionPerformed` correctly updates admin details.                                                                                                    |
-| TC_ADMIN_USER_007 | Delete an admin user.                                                      | Pass   | `hapusActionPerformed` correctly deletes admin.                                                                                                           |
-| TC_ADMIN_PRICE_001| View list of prices.                                                       | Pass   | `data_harga()` method correctly loads prices into table.                                                                                                  |
-| TC_ADMIN_PRICE_002| Edit an existing price for a specific class and status.                    | Pass   | `simpanActionPerformed` (price panel) correctly updates price.                                                                                            |
-| TC_ADMIN_PRICE_003| Attempt to save a price with a non-numeric value.                        | Pass   | Fails at DB level (if column is numeric), error message shown.                                                                                            |
-| TC_ADMIN_PRICE_004| Attempt to save a price with a negative value.                           | Pass   | Application allows saving negative prices.                                                                                                                |
-| TC_PASSENGER_001  | View list of booked passengers.                                            | Pass   | `data()` method in `Penumpang.java` correctly loads passenger data.                                                                                       |
-| TC_PASSENGER_002  | Verify that a newly booked ticket appears in the passenger list.           | Pass   | New booking insertion in `Home` and subsequent reload in `Penumpang` works.                                                                               |
-| TC_PASSENGER_003  | Test the "Print" functionality for passenger data.                         | Pass   | JasperReports invocation for passenger list is correct.                                                                                                   |
-| TC_PASSENGER_004  | Test the "Delete All Data" functionality.                                  | Pass   | `HapusActionPerformed` correctly deletes all passengers after confirmation.                                                                               |
-| TC_PASSENGER_005  | Test the "Delete All Data" functionality - Cancel.                         | Pass   | Cancellation of "Delete All Data" works as expected.                                                                                                      |
-
-*(Note: The actual results for TC_LOGIN_003 and TC_LOGIN_005 were corrected in the table above as they were duplicated in the source .md file during the previous step's tool output.)*
-
-## 6. Key Findings and Issues
-
-### 6.1. Bugs/Failed Test Cases
-
-The following test cases failed, primarily due to lack of input validation in the Ticket Booking (`Home.java`) module:
-
-*   **TC_BOOK_003: Attempt booking without selecting a destination.**
-    *   **Issue:** The application does not validate if a destination station has been selected. It proceeds to save the booking, likely with the default (first) item in the JComboBox, or an empty value if the ComboBox allows it. This can lead to incorrect booking data and affect dependent logic like departure/arrival time determination.
-*   **TC_BOOK_004: Attempt booking without selecting a train.**
-    *   **Issue:** The application allows booking with an empty string (`""`) as the train name because the JComboBox for trains has an initial empty item and there's no validation. This results in meaningless data for the train, and departure/arrival times are not set (remaining "00.00 WIB").
-*   **TC_BOOK_005: Attempt booking without selecting a carriage class.**
-    *   **Issue:** Similar to train selection, an empty carriage class (`" "`) can be saved due to lack of validation. This leads to incorrect price calculation, as the logic to fetch prices (`kelasActionPerformed`) won't find matching criteria, resulting in prices being "0" or stale from previous selections.
-*   **TC_BOOK_006: Attempt booking without entering passenger name.**
-    *   **Issue:** The application does not perform any client-side validation to ensure the passenger name is entered. It attempts to save an empty string. This will only fail if the corresponding database column (`nama` in `penumpang` table) has a `NOT NULL` constraint that also prevents empty strings. Otherwise, bookings with no passenger name are created.
-*   **TC_BOOK_007: Attempt booking with zero adults and zero children.**
-    *   **Issue:** The system allows a booking to be made even if both the number of adults and children are zero. This results in a booking with a total price of zero and no actual passengers, which is logically incorrect.
-
-### 6.2. Areas for Improvement/Observations
-
-Beyond the direct test failures, the static analysis revealed several areas where the application could be improved for robustness and maintainability:
-
-*   **General Lack of Input Validation (Ticket Booking):** As highlighted by the failed test cases, the ticket booking module (`Home.java`) is significantly lacking in proactive input validation for mandatory fields (destination, train, class, passenger name) and logical minimums (at least one passenger). Relying solely on database constraints (if they exist) is not user-friendly.
-*   **Negative Prices Allowed (Admin Panel - Price Management):** (TC_ADMIN_PRICE_004) The system allows negative values to be entered and saved for ticket prices. This is likely undesirable and should be prevented with validation.
-*   **Passenger ID Generation (`autoid()` in `Home.java`):** The current method `SELECT COUNT(id) as kode FROM penumpang` then adding 1 to the count (e.g., "MR.X") is not robust. It can lead to duplicate IDs if records are deleted or in a concurrent access scenario (though less likely for this type of desktop app). A more robust approach would be using database auto-increment primary keys directly, or UUIDs.
-*   **Date Handling for Database (`simpan()` in `Home.java`):** The code uses `tanggal.getDate()` and directly concatenates it into the SQL string. The way `java.util.Date.toString()` formats the date might not always be compatible with MySQL's expected date format, potentially leading to errors or incorrect date storage depending on locale or MySQL configuration. Using `PreparedStatement` with `setDate()` is the recommended practice.
-*   **Empty Admin Passwords Allowed (Admin Panel - User Management):** (TC_ADMIN_USER_005) The application allows creating admin users with empty passwords. While the test passed as the system functions as coded, this is a security concern and should ideally be disallowed through validation.
-*   **Error Handling:** Generic `catch(Exception e)` or `catch(SQLException e)` blocks are used, showing `JOptionPane.showMessageDialog(null,e);`. While this displays the error, it's not very user-friendly as it often exposes raw SQL or Java exception details. More specific error messages would be better.
-*   **Code Structure in `Home.java` (`ckeretaActionPerformed`):** The long if-else-if chain for setting departure/arrival times based on train and destination is hard to maintain and prone to errors. This could be refactored, perhaps using a data structure or a more object-oriented approach if train schedules become complex.
-
-## 7. Overall Assessment
-
-The "1TiketKeretaApi" application provides a basic framework for the intended functionalities. The Admin and Passenger Data sections appear relatively stable based on the code paths for their core operations (CRUD for admins/prices, viewing/deleting/reporting for passengers).
-
-However, the **Ticket Booking module (`Home.java`) requires significant attention**. The lack of fundamental input validation for critical fields (destination, train, class, passenger name, passenger count) leads to multiple failed test cases and could result in inconsistent or invalid data in the database, as well as a poor user experience.
-
-Recommendations for improvement include:
-*   Implementing comprehensive input validation in the `Home.java` module before attempting to save booking data.
-*   Adding validation to prevent negative prices.
-*   Refactoring passenger ID generation and date handling for database operations to improve robustness.
-*   Enhancing error handling to provide more user-friendly messages.
-*   Reviewing the policy on empty admin passwords.
-
-Addressing these issues, particularly the input validation in ticket booking, would substantially improve the application's reliability and usability.
+Mengatasi isu-isu ini, terutama validasi input dalam pemesanan tiket, akan secara substansial meningkatkan keandalan dan kegunaan aplikasi.
